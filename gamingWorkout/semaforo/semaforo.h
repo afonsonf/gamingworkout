@@ -19,7 +19,7 @@ public:
     void init_win();
     void initGame();
 
-    void but_click();
+    void but_click(int i, int j);
 
     std::array< std::array<char, 4>, 3> getBoard();
     int getTurn();

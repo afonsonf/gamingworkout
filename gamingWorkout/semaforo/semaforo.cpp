@@ -4,11 +4,15 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#import <time.h>
+
+#include <QDebug>
+#include <QMessageBox>
 
 QPushButton *back;
 
 QPushButton *m[3][4];
-int player_turn;
+int game_end;
 
 Semaforo::Semaforo(QWidget *parent,QPushButton *b) :
     QWidget(parent),
@@ -16,6 +20,7 @@ Semaforo::Semaforo(QWidget *parent,QPushButton *b) :
 {
     ui->setupUi(this);
     init_win();
+    initGame();
     back = b;
 }
 
@@ -33,12 +38,14 @@ void Semaforo::init_win()
             m[i][j]->setFixedHeight(200);
             m[i][j]->setFixedWidth(200);
             connect(m[i][j],&QPushButton::clicked, [=]() {
-                but_click();
+                but_click(i,j);
             });
             m[i][j]->setStyleSheet("background-color: white");
             ui->gridLayout->addWidget(m[i][j],i,j);
         }
     }
+    turn = 2;
+    game_end=0;
 }
 
 void Semaforo::initGame() {
@@ -46,14 +53,62 @@ void Semaforo::initGame() {
         for(int j=0; j<4; j++)
             this->board[i][j] = 'w';
 
-    this->turn = -1;
     this->lastMoveX = -1;
     this->lastMoveY = -1;
 }
 
-void Semaforo::but_click()
+void Semaforo::but_click(int i,int j)
 {
 
+    if(turn!=2 || game_end) return;
+    if(!validMove(i,j)) return;
+    //play human
+    playHuman(i,j);
+    lastMoveX=j;
+    lastMoveY=i;
+    qDebug() << turn << " " << i << " " << j << " " << board[lastMoveY][lastMoveX] << "0";
+    switch(board[lastMoveY][lastMoveX]){
+        case 'g':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
+            break;
+        }
+        case 'y':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
+            break;
+        }
+        case 'r':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
+            break;
+        }
+    }
+    if(checkGameOver()){
+        game_end = 1;
+        QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+        return;
+    }
+    //play bot
+    turn = 1;
+    playBot();
+    switch(board[lastMoveY][lastMoveX]){
+        case 'g':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
+            break;
+        }
+        case 'y':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
+            break;
+        }
+        case 'r':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
+            break;
+        }
+    }
+    if(checkGameOver()){
+        game_end = 1;
+        QMessageBox::information(this,"Game ended","Perdes-te!\n");
+        return;
+    }
+    turn = 2;
 }
 
 std::array< std::array<char, 4>, 3> Semaforo::getBoard(){
@@ -112,12 +167,16 @@ std::pair<int, int> Semaforo::playBot(){
     std::pair<int, int> move = chooseMove();
 
     updateBoard(move.first, move.second);
-
+    lastMoveX = move.second;
+    lastMoveY = move.first;
     return move;
 }
 
 std::pair<int, int> Semaforo::chooseMove(){
-    return std::make_pair(0, 0);
+    srand (time(NULL));
+    std::vector<std::pair<int,int> > v = possibleMoves();
+    int i = rand() % v.size();
+    return v[i];
 }
 
 void Semaforo::updateBoard(int moveY, int moveX){

@@ -31,7 +31,7 @@ void MainWindow::begin_win(){
         img->setFixedHeight(200);
         img->setFixedWidth(200);
         QPushButton *b = new QPushButton("play");
-        QTextEdit *t = new QTextEdit("jogo");
+        QLabel *t = new QLabel("jogo");
         QWidget *wv = new QWidget;
         QWidget *wh = new QWidget;
         QHBoxLayout *hl = new QHBoxLayout;
