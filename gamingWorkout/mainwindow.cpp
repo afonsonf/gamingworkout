@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "semaforo.h"
 
 #include <QPushButton>
 #include <QTextEdit>
@@ -7,9 +8,7 @@
 #include <QWidget>
 #include <QDebug>
 
-#include "semaforo.h"
-
-
+Semaforo *s;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,8 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     begin_win();
-    Semaforo *s = new Semaforo();
-    s->show();
+
     //comentario afonso
 }
 
@@ -47,5 +45,13 @@ void MainWindow::begin_win(){
         hl->addWidget(wv);
         wh->setLayout(hl);
         ui->games_l->addWidget(wh);
+        connect(b,&QPushButton::clicked, [=]() {
+            show_s();
+       });
     }
+}
+
+void MainWindow::show_s(){
+    s = new Semaforo();
+    s->show();
 }
