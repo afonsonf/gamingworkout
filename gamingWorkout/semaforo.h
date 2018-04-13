@@ -13,6 +13,12 @@ class Semaforo : public QWidget
 
 public:
     explicit Semaforo(QWidget *parent = 0);
+<<<<<<< HEAD
+=======
+    //Semaforo();
+    //Semaforo(int turn);
+    //Semaforo(Semaforo& parent, int moveX, int moveY);
+>>>>>>> d7fab873663d2739d69de1fad954b7f7be28d668
     ~Semaforo();
 
     std::array< std::array<char, 4>, 3> getBoard();
@@ -22,6 +28,9 @@ public:
 
     bool validMove(int moveX, int moveY);
     std::vector< std::array<int, 2> > possibleMoves();
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     Ui::Semaforo *ui;

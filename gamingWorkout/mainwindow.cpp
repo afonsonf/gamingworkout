@@ -16,7 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     begin_win();
-
+    Semaforo *s = new Semaforo();
+    s->show();
     //comentario afonso
 }
 
