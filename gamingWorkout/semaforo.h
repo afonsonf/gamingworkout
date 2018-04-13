@@ -16,13 +16,20 @@ public:
     explicit Semaforo(QWidget *parent = 0,QPushButton *back = 0);
     ~Semaforo();
 
+    void initGame();
+
     std::array< std::array<char, 4>, 3> getBoard();
     int getTurn();
     int getLastMoveX();
     int getLastMoveY();
 
-    bool validMove(int moveX, int moveY);
-    std::vector< std::array<int, 2> > possibleMoves();
+    bool validMove(int moveY, int moveX);
+    std::vector< std::pair<int, int> > possibleMoves();
+    void playHuman(int moveY, int moveX);
+    std::pair<int, int> playBot();
+    std::pair<int, int> chooseMove();
+    void updateBoard(int moveY, int moveX);
+    bool checkGameOver();
 
 private slots:
     void on_pushButton_clicked();
