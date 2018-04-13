@@ -8,8 +8,6 @@
 #include <QWidget>
 #include <QDebug>
 
-Semaforo *s;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -49,9 +47,22 @@ void MainWindow::begin_win(){
             show_s();
        });
     }
+    ui->back->setHidden(true);
 }
 
 void MainWindow::show_s(){
-    s = new Semaforo();
-    s->show();
+    Semaforo *s = new Semaforo();
+    //s->show();
+    if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
+    ui->stackedWidget->addWidget(s);
+    ui->stackedWidget->setCurrentIndex(1);
+    ui->back->setHidden(false);
+    //ui->game->;
+}
+
+void MainWindow::on_back_clicked()
+{
+    if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->back->setHidden(true);
 }
