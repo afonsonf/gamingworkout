@@ -44,7 +44,7 @@
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
-                <layout class="QVBoxLayout" name="gamesL"/>
+                <layout class="QGridLayout" name="gridLayout"/>
                </item>
               </layout>
              </widget>

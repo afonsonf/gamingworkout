@@ -32,6 +32,3 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui
-
-RESOURCES += \
-    res_semaforo.qrc
