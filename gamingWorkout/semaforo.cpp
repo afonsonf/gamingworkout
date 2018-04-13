@@ -101,8 +101,9 @@ std::vector< std::array<int, 2> > Semaforo::possibleMoves(){
                 moves.push_back(arr);
             }
 
-    std::cout << "moves std::array" << moves[0][0] << " " << moves[0][1] << std::endl;
-    std::cout << "moves2 std::array" << moves[1][0] << " " << moves[1][1] << std::endl;
+    std::cout << "Possible moves:" << std::endl;
+    for(int i=0; i<moves.size(); i++)
+        std::cout << "y: " << moves[i][0] << " x: " << moves[i][1] << std::endl;
 
     return moves;
 }
