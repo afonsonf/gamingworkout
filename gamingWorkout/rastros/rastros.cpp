@@ -6,9 +6,10 @@ using namespace std;
 #define white 1
 
 pair<int,int> branca = make_pair(4,4);
-pair<int,int> casa1 = make_pair(0,0);
+pair<int,int> casa1 = make_pair(0,0); //casa do jogador 1
 pair<int,int> casa2 = make_pair(6,6);
 int turn; //1 turno do bot, 0 do jogador
+int first_player;
 int max_depth;
 int li,co; //linha e coluna onde o jogador joga
 
@@ -32,12 +33,21 @@ public:
 	}
 
 	int end() {
-	vector < pair<int,int> > p = this->possible_moves(); 
-	if (this->config[0][0] == white || (p.size()==0 && turn == 1))
-		return 0;
-	else if (this->config[6][6] == white || (p.size() == 0 
-		&& turn == 0))
-		return 1;
+	vector < pair<int,int> > p = this->possible_moves();
+	if (first_player==0) 
+		if (this->config[0][0] == white || (p.size()==0 && turn == 1))
+			return 0;
+		else if (this->config[6][6] == white || (p.size() == 0 
+			&& turn == 0))
+			return 1;
+	}
+	else{ 
+		if (this->config[6][6] == white || (p.size()==0 && turn == 1))
+			return 0;
+		else if (this->config[0][0] == white || (p.size() == 0 
+			&& turn == 0))
+			return 1;		
+	}
 
 	return -1;
 	}
@@ -68,7 +78,7 @@ public:
 		branca = x;
 	}
 
-	int heuristic() {
+	int heuristic_0() { //heuristica para o jogador
 		set<pair<int,int>,int> dist;
 		queue<pair<int,int>> q;
 		set<pair<int,int>,int>::iterator it;
@@ -78,9 +88,31 @@ public:
 			pair<int,int> x = q.pop();
 			it = dist.find(x);
 
-			if (x==)
+			if (first_player==0) {
+				if (x==casa1)
+					return it->second;
+			}
+
+			else{
+				if (x==casa2)
+					return it->second;
+			}
+
+			if (it==dist.end()) {
+				branca = x;
+				vector<pair<int,int> > p = this->possible_moves();
+				for (int i=0; i< (int)p.size(); i++) {
+					pair<int,int> g = p[i];
+					it = dist.find(g);
+					if (it==)
+				}
+			}
 
 		}
+
+	}
+
+	int heuristic_1 { //heuristica para o bot
 
 	}
 };
@@ -138,10 +170,14 @@ int main () {
 	Node *x = new Node();
 	printf ("Do you want to be the first to play?\n(1)Yes\n(2)No\nOption: ");
 	scanf ("%d", &turn);
-	if (turn == 2)
-		turn = 1; //bot primeiro a jogar 
-	else
+	if (turn == 2){
+		turn = 1; //bot primeiro a jogar
+		first_player = 1; 
+	}
+	else{
 		turn = 0;
+		first_player = 0;
+	}
 	while (x->end()!=-1){
 		if (turn == 0){
 			bool jog =playHuman(x);
