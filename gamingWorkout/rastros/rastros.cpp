@@ -7,7 +7,7 @@ using namespace std;
 
 pair<int,int> branca = make_pair(4,4);
 pair<int,int> casa1 = make_pair(0,0); //casa do jogador 1
-pair<int,int> casa2 = make_pair(6,6);
+pair<int,int> casa2 = make_pair(6,6); //casa do jogador 2
 int turn; //1 turno do bot, 0 do jogador
 int first_player;
 int max_depth;
@@ -17,7 +17,9 @@ class Node {
 public:
 	int config[7][7];
 	int depth;
-	pair<int,int> last_play;
+	pair<int,int> last_play; //lugar para onde se moveu a branca na jogada anterior
+	pair<int,int> last_branca; //lugar onde estava a branca na jogada anterior
+	pair<int,int> best;
 
 	Node () {
 	for (int i=0;i<7;i++){
@@ -30,6 +32,8 @@ public:
 		}
 	this->depth=0;
 	this->last_play = branca;
+	this->last_branca = branca;
+	this->best = make_pair(0,0);
 	}
 
 	int end() {
@@ -72,10 +76,12 @@ public:
 		int ib = branca.first;
 		int jb = branca.second;
 		this->config[ib][jb] = black;
+		this->last_branca = branca;
 		int inb = x.first; //nova linha da branca
 		int jnb = x.second; //nova coluna da branca
 		this->config[inb][jnb] = white;
 		branca = x;
+		this->last_play = branca;
 	}
 
 	int heuristic_0() { //heuristica para o jogador
@@ -103,7 +109,6 @@ public:
 
 			if (!visited[branca.first + branca.second*7]) {
 				visited[branca.first + branca.second*7] = true;
-				branca = x;
 				vector<pair<int,int> > p = this->possible_moves();
 				for (int i=0; i< (int)p.size(); i++) {
 					pair<int,int> g = p[i];
@@ -118,10 +123,20 @@ public:
 		branca = branca2;
 	}
 
+	void removep (pair<int,int> lp,pair<int,int> lb) {
+		branca = lb;
+		int lia = lp.first;
+		int lja = lp.second;
+		int bia = lb.first;
+		int bja = lb.second;
+		this->config[lia][lja]=0;
+		this->config[bia][bja]=white;
+	}
+
 };
 
 bool playHuman(Node *x);
-int playBot();
+void playBot(Node *x);
 pair<int,int> minimax(Node *x);
 int min_value (Node *x);
 int max_value(Node *x);
@@ -131,24 +146,75 @@ pair<int,int> minimax(Node *x) {
 		int heu = max_value (x);
 	else
 		int heu = min_value(x);
+	return x->best;
 }
 
 int min_value (Node *x) {
 	int t = x->end();
 	if (t > -1 || x->depth>=max_depth) { //valores de heurisitca extremos
-
+		switch(t){
+			case 1:
+				return 100;
+			case 0:
+				return -100;
+			default:
+				return x->heuristic_0();
+			}
 	}
 	int val = INT_MAX;
+	int y;
+	pair<int,int> lb = x->last_branca; 
+	pair<int,int> lp = x->last_play;
+	vector<pair<int,int>> p = x->possible_moves();
+	for (int i=0; i<(int)p.size(); i++) {
+		x->play(p[i]);
+		y = max_value (x);
+
+		if (val > y) {
+			if (x->depth==1)
+				x->best = x->last_play;
+			val = y;
+		}
+
+		x->depth--;
+		x->removep(lp,lb);
+	}
+
+	return val;
 }
 
 int max_value(Node *x) {
-	if (x->end() > -1 || x->depth>=max_depth) { //valores de heuristica extremos
-	
+	int t = x->end();
+	if (t > -1 || x->depth>=max_depth) { //valores de heurisitca extremos
+		switch(t){
+			case 1:
+				return 100;
+			case 0:
+				return -100;
+			default:
+				return x->heuristic_0();
+			}
+	}
+	int val = INT_MIN;
+	int y;
+	pair<int,int> lb = x->last_branca; 
+	pair<int,int> lp = x->last_play;
+	vector<pair<int,int>> p = x->possible_moves();
+	for (int i=0; i<(int)p.size(); i++) {
+		x->play(p[i]);
+		y = min_value (x);
+
+		if (val > y) {
+			if (x->depth==1)
+				x->best = x->last_play;
+			val = y;
+		}
+
+		x->depth--;
+		x->removep(lp,lb);
 	}
 
-	int val = INT_MIN;
-
-
+	return val;
 }
 
 bool playHuman(Node *x) {	
@@ -165,8 +231,9 @@ bool playHuman(Node *x) {
 	return poss;
 }
 
-int playBot () {
-
+void playBot (Node *x) {
+	pair<int,int> i = minimax(x);
+	x->play(x->best);
 }
 
 int main () {
@@ -193,7 +260,7 @@ int main () {
 			turn = 1; 
 		}
 		else{ //turn=2 na primeira ronda caso seja o primeiro a jogar
-			int x =playBot();
+			playBot(x);
 			turn = 0;
 		}
 	}
