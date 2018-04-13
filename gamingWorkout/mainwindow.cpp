@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QPushButton *p = new QPushButton;
         ui->gridLayout->addWidget(p,j,i%3);
         if(j%3 == 0 && !j) j++;
+        j++;
     }
     //comentario afonso
 }
