@@ -7,6 +7,8 @@
 #include <QWidget>
 #include <QDebug>
 
+#include "semaforo.h"
+
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -15,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     begin_win();
-
+    Semaforo *s = new Semaforo();
+    s->show();
     //comentario afonso
 }
 
