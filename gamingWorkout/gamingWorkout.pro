@@ -25,10 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    semaforo.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    semaforo.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    semaforo.ui
