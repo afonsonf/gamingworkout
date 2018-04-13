@@ -7,17 +7,38 @@
 
 QPushButton *back;
 
+QPushButton *m[3][4];
+int player_turn;
+
 Semaforo::Semaforo(QWidget *parent,QPushButton *b) :
     QWidget(parent),
     ui(new Ui::Semaforo)
 {
     ui->setupUi(this);
+    init_win();
     back = b;
 }
 
 Semaforo::~Semaforo()
 {
     delete ui;
+}
+
+void Semaforo::init_win()
+{
+    ui->gridLayout->setSpacing(5);
+    for(int i=0;i<3;i++){
+        for(int j=0;j<4;j++){
+            m[i][j] = new QPushButton;
+            m[i][j]->setFixedHeight(200);
+            m[i][j]->setFixedWidth(200);
+            connect(m[i][j],&QPushButton::clicked, [=]() {
+                but_click();
+            });
+            m[i][j]->setStyleSheet("background-color: white");
+            ui->gridLayout->addWidget(m[i][j],i,j);
+        }
+    }
 }
 
 void Semaforo::initGame() {
@@ -28,6 +49,11 @@ void Semaforo::initGame() {
     this->turn = -1;
     this->lastMoveX = -1;
     this->lastMoveY = -1;
+}
+
+void Semaforo::but_click()
+{
+
 }
 
 std::array< std::array<char, 4>, 3> Semaforo::getBoard(){

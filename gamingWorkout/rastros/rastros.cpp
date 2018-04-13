@@ -34,7 +34,7 @@ public:
 
 	int end() {
 	vector < pair<int,int> > p = this->possible_moves();
-	if (first_player==0) 
+	if (first_player==0) {
 		if (this->config[0][0] == white || (p.size()==0 && turn == 1))
 			return 0;
 		else if (this->config[6][6] == white || (p.size() == 0 
@@ -79,42 +79,45 @@ public:
 	}
 
 	int heuristic_0() { //heuristica para o jogador
-		set<pair<int,int>,int> dist;
+		pair<int,int> branca2=branca;
+		vector<int> dist(56,0);
+		vector<bool> visited(56,false);
 		queue<pair<int,int>> q;
-		set<pair<int,int>,int>::iterator it;
 		q.push(branca);
-		dist.insert(branca,0);
+		dist[branca.first + branca.second*7]=0;
 		while (!q.empty()) {
-			pair<int,int> x = q.pop();
-			it = dist.find(x);
+			pair<int,int> x = q.front();
+			q.pop();
+			branca = x;
+			int dist2 = dist[branca.first + branca.second*7];
 
 			if (first_player==0) {
 				if (x==casa1)
-					return it->second;
+					return dist2;;
 			}
 
 			else{
 				if (x==casa2)
-					return it->second;
+					return dist2;
 			}
 
-			if (it==dist.end()) {
+			if (!visited[branca.first + branca.second*7]) {
+				visited[branca.first + branca.second*7] = true;
 				branca = x;
 				vector<pair<int,int> > p = this->possible_moves();
 				for (int i=0; i< (int)p.size(); i++) {
 					pair<int,int> g = p[i];
-					it = dist.find(g);
-					if (it==)
+					if (!visited[g.first +g.second*7]){
+						dist[g.first + g.second*7]=dist2+1;
+						q.push(g);
+					}
 				}
 			}
 
 		}
-
+		branca = branca2;
 	}
 
-	int heuristic_1 { //heuristica para o bot
-
-	}
 };
 
 bool playHuman(Node *x);

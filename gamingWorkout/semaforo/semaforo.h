@@ -16,7 +16,10 @@ public:
     explicit Semaforo(QWidget *parent = 0,QPushButton *back = 0);
     ~Semaforo();
 
+    void init_win();
     void initGame();
+
+    void but_click();
 
     std::array< std::array<char, 4>, 3> getBoard();
     int getTurn();
