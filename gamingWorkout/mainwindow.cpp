@@ -7,13 +7,26 @@
 #include <QWidget>
 #include <QDebug>
 
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    begin_win();
+
+    //comentario afonso
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::begin_win(){
     for(int i=0;i<10;i++){
-        QPixmap pixmap(":/icon/semaforo/img/semaforo.png");
+        QPixmap pixmap(":/img/semaforo/img/semaforo.png");
         QLabel *img = new QLabel;
         img->setPixmap(pixmap.scaled(200,200,Qt::IgnoreAspectRatio, Qt::FastTransformation));
         img->setFixedHeight(200);
@@ -30,13 +43,6 @@ MainWindow::MainWindow(QWidget *parent) :
         hl->addWidget(img);
         hl->addWidget(wv);
         wh->setLayout(hl);
-        ui->gamesL->addWidget(wh);
+        ui->games_l->addWidget(wh);
     }
-
-    //comentario afonso
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
