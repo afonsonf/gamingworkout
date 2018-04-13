@@ -24,6 +24,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>New Game</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -37,12 +44,68 @@
       </spacer>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox"/>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>First Player:</string>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QComboBox" name="comboBox_2">
+       <item>
+        <property name="text">
+         <string>human</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>bot</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox">
+       <item>
+        <property name="text">
+         <string>easy</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>medium</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>hard</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>random</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
        <property name="text">
-        <string>New Game</string>
+        <string>Start</string>
        </property>
       </widget>
      </item>
