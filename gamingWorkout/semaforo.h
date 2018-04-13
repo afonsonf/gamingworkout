@@ -13,9 +13,6 @@ class Semaforo : public QWidget
 
 public:
     explicit Semaforo(QWidget *parent = 0);
-    Semaforo();
-    Semaforo(int turn);
-    Semaforo(Semaforo& parent, int moveX, int moveY);
     ~Semaforo();
 
     std::array< std::array<char, 4>, 3> getBoard();
