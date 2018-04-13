@@ -5,13 +5,14 @@
 #include <array>
 #include <vector>
 
+QPushButton *back;
 
-
-Semaforo::Semaforo(QWidget *parent) :
+Semaforo::Semaforo(QWidget *parent,QPushButton *b) :
     QWidget(parent),
     ui(new Ui::Semaforo)
 {
     ui->setupUi(this);
+    back = b;
 }
 
 Semaforo::~Semaforo()
@@ -110,4 +111,9 @@ std::vector< std::array<int, 2> > Semaforo::possibleMoves(){
 void Semaforo::on_pushButton_clicked()
 {
     this->possibleMoves();
+}
+
+void Semaforo::on_sair_clicked()
+{
+    back->click();
 }

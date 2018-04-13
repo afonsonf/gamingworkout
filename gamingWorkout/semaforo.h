@@ -2,6 +2,7 @@
 #define SEMAFORO_H
 
 #include <QWidget>
+#include <QPushButton>
 
 namespace Ui {
 class Semaforo;
@@ -12,7 +13,7 @@ class Semaforo : public QWidget
     Q_OBJECT
 
 public:
-    explicit Semaforo(QWidget *parent = 0);
+    explicit Semaforo(QWidget *parent = 0,QPushButton *back = 0);
     ~Semaforo();
 
     std::array< std::array<char, 4>, 3> getBoard();
@@ -25,6 +26,8 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+
+    void on_sair_clicked();
 
 private:
     Ui::Semaforo *ui;

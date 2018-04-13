@@ -51,12 +51,12 @@ void MainWindow::begin_win(){
 }
 
 void MainWindow::show_s(){
-    Semaforo *s = new Semaforo();
+    Semaforo *s = new Semaforo(this,ui->back);
     //s->show();
     if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
     ui->stackedWidget->addWidget(s);
     ui->stackedWidget->setCurrentIndex(1);
-    ui->back->setHidden(false);
+    ui->back->setHidden(true);
     //ui->game->;
 }
 
