@@ -13,6 +13,8 @@ QPushButton *back;
 
 QPushButton *m[3][4];
 int game_end;
+int game_start;
+int first_player;
 
 Semaforo::Semaforo(QWidget *parent,QPushButton *b) :
     QWidget(parent),
@@ -46,6 +48,8 @@ void Semaforo::init_win()
     }
     turn = 2;
     game_end=0;
+    game_start = 1;
+    first_player = 2;
 }
 
 void Semaforo::initGame() {
@@ -59,8 +63,7 @@ void Semaforo::initGame() {
 
 void Semaforo::but_click(int i,int j)
 {
-
-    if(turn!=2 || game_end) return;
+    if(turn!=2 || game_end || (game_start && first_player == 1)) return;
     if(!validMove(i,j)) return;
     //play human
     playHuman(i,j);
@@ -255,4 +258,10 @@ void Semaforo::on_pushButton_clicked()
 void Semaforo::on_sair_clicked()
 {
     back->click();
+}
+
+void Semaforo::on_comboBox_2_currentIndexChanged(const QString &arg1)
+{
+    if(arg1=="human")first_player = 2;
+    else first_player = 1;
 }
