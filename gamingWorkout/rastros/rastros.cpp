@@ -158,7 +158,7 @@ int min_value (Node *x) {
 			case 0:
 				return -100;
 			default:
-				return x->heuristic_0();
+				return (-x->heuristic_0());
 			}
 	}
 	int val = INT_MAX;
