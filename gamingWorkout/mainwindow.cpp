@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "semaforo.h"
+#include "semaforo/semaforo.h"
 
 #include <QPushButton>
 #include <QTextEdit>
@@ -25,7 +25,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::begin_win(){
     for(int i=0;i<10;i++){
-        QPixmap pixmap(":/img/semaforo/img/semaforo.png");
+        QPixmap pixmap(":/img/img/semaforo.png");
         QLabel *img = new QLabel;
         img->setPixmap(pixmap.scaled(200,200,Qt::IgnoreAspectRatio, Qt::FastTransformation));
         img->setFixedHeight(200);
