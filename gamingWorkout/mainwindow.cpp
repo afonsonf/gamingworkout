@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->gridLayout->addWidget(p,j,i%3);
         if(j%3 == 0 && !j) j++;
     }
+    //comentario afonso
 }
 
 MainWindow::~MainWindow()
