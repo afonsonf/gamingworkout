@@ -1,4 +1,4 @@
-#include "semaforo.h"
+#include "semaforo/semaforo.h"
 #include "ui_semaforo.h"
 
 #include <iostream>
@@ -196,55 +196,47 @@ bool Semaforo::checkGameOver(){
     //verify horizontal
     for(int i=0; i<3; i++){
         for(int j=0; j<2; j++){
-            if(this->board[i][j] == 'r'){
-                n=1;
-                for(int k=1; k<3; k++)
-                    if(this->board[i][j+k] == 'r')
-                        n++;
+            n=1;
+            for(int k=1; k<3; k++)
+                if(this->board[i][j+k] == this->board[i][j])
+                    n++;
 
-                if(n == 3)
-                    return true;
-            }
+            if(n == 3)
+                return true;
         }
     }
 
     //verify vertical
     for(int i=0; i<4; i++){
-        if(this->board[i][0] == 'r'){
-            n=1;
-            for(int k=1; k<3; k++)
-                if(this->board[i][k] == 'r')
-                    n++;
+        n=1;
+        for(int k=1; k<3; k++)
+            if(this->board[k][i] == this->board[0][i])
+                n++;
 
-            if(n == 3)
-                return true;
-        }
+        if(n == 3)
+            return true;
     }
 
     //verify down/right
     for(int i=0; i<2; i++){
-        if(this->board[0][i] == 'r'){
-            n=1;
-            for(int k=1; k<3; k++)
-                if(this->board[k][i+k] == 'r')
-                    n++;
+        n=1;
+        for(int k=1; k<3; k++)
+            if(this->board[k][i+k] == this->board[0][i+k])
+                n++;
 
-            if(n == 3)
+        if(n == 3)
                 return true;
-        }
     }
 
     //verify down/left
-    for(int i=3; i>1; i--){
-        if(this->board[0][i] == 'r'){
-            n=1;
-            for(int k=1; k<3; k++)
-                if(this->board[k][i-k] == 'r')
-                    n++;
+    for(int i=3; i>1; i++){
+        n=1;
+        for(int k=1; k<3; k++)
+            if(this->board[k][i-k] == this->board[0][i-k])
+                n++;
 
-            if(n == 3)
-                return true;
-        }
+        if(n == 3)
+            return true;
     }
 
     return false;
