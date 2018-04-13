@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>semaforo/img/semaforo.png</file>
+    </qresource>
+</RCC>
