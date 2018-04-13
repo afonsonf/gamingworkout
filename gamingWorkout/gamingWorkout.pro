@@ -34,4 +34,8 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui \
-    semaforo.ui
+        semaforo.ui
+
+
+RESOURCES += \
+    semaforo.qrc
