@@ -1,4 +1,4 @@
-#include "semaforo.h"
+#include "semaforo/semaforo.h"
 #include "ui_semaforo.h"
 
 #include <iostream>
