@@ -24,6 +24,9 @@ private:
     Ui::rastros *ui;
     QPushButton *back;
     QPushButton *m[7][7];
+    int game_end;
+    int game_start;
+    int first_player;
 
     int brancaI;
     int brancaJ;

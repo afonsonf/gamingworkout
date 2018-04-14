@@ -13,6 +13,7 @@ rastros::rastros(QWidget *parent,QPushButton *b) :
     back = b;
 
     init_win();
+    init();
 }
 
 void rastros::init_win()
@@ -46,15 +47,63 @@ void rastros::init_win()
     m[2][4]->setIcon(ButtonIcon3);
     m[2][4]->setIconSize(m[2][4]->size());
     turn = 0;
-    /*
     game_end=0;
     game_start = 1;
-    first_player = 2;*/
+    first_player = 2;
 }
 
 void rastros::but_click(int i,int j)
 {
-
+    //qDebug() << turn << " " << i << " " << j << ;
+    if(turn!=2 || game_end || (game_start && first_player == 1)) return;
+    if(game_start)game_start =0;
+    if(!validMove(i,j)) return;
+    //play human
+    playHuman(i,j);
+    lastMoveX=j;
+    lastMoveY=i;
+    switch(board[lastMoveY][lastMoveX]){
+        case 'g':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
+            break;
+        }
+        case 'y':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
+            break;
+        }
+        case 'r':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
+            break;
+        }
+    }
+    if(checkGameOver()){
+        game_end = 1;
+        QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+        return;
+    }
+    //play bot
+    turn = 1;
+    playBot();
+    switch(board[lastMoveY][lastMoveX]){
+        case 'g':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
+            break;
+        }
+        case 'y':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
+            break;
+        }
+        case 'r':{
+            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
+            break;
+        }
+    }
+    if(checkGameOver()){
+        game_end = 1;
+        QMessageBox::information(this,"Game ended","Perdes-te!\n");
+        return;
+    }
+    turn = 2;
 }
 
 rastros::~rastros()
@@ -74,8 +123,6 @@ void rastros::init()
 
     for(int i=0;i<6;i++)
         for(int j=0;j<6;j++) board[j][j]=0;
-
-    turn = 1;
 }
 
 bool rastros::valid_move(int i, int j)
