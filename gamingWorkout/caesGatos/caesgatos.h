@@ -21,6 +21,10 @@ public:
 private slots:
     void on_sair_clicked();
 
+    void on_new_game_clicked();
+
+    void on_comboBox_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::CaesGatos *ui;
     QPushButton *back;

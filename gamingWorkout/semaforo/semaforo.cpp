@@ -60,7 +60,11 @@ void Semaforo::but_click(int i,int j)
     //qDebug() << turn << " " << i << " " << j << ;
     if(turn!=2 || game_end || (game_start && first_player == 1)) return;
     if(game_start)game_start =0;
-    if(!validMove(i,j)) return;
+    if(!validMove(i,j)){
+        ui->mensagem->setText("Invalid move");
+        return;
+    }
+    ui->mensagem->setText("");
     //play human
     playHuman(i,j);
     lastMoveX=j;
@@ -86,7 +90,9 @@ void Semaforo::but_click(int i,int j)
     }
     //play bot
     turn = 1;
+    ui->mensagem->setText("thinking");
     playBot();
+    ui->mensagem->setText("");
     switch(board[lastMoveY][lastMoveX]){
         case 'g':{
             m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");

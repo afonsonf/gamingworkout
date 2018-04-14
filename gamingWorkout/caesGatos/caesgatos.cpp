@@ -54,7 +54,11 @@ void CaesGatos::but_click(int i,int j)
 
     if(turn!=0 || game_end || (game_start && first_player == 1)) return;
 
-    if(!validMove(2,(7-i)*10+j)) return;
+    if(!validMove(2,(7-i)*10+j)){
+        ui->mensagem->setText("invalid move");
+        return;
+    }
+    ui->mensagem->setText("");
     if(game_start)game_start =0;
 
     //play human
@@ -88,7 +92,9 @@ void CaesGatos::but_click(int i,int j)
 
     //play bot
     turn = 1;
+    ui->mensagem->setText("thinking");
     int move = playBot();
+    ui->mensagem->setText("");
     std::vector<int> vv = possMoves(1);
     /*
     qDebug() << "A";
@@ -294,3 +300,90 @@ bool CaesGatos::end()
   return (np1*np2)==0;
 }
 
+void CaesGatos::on_new_game_clicked()
+{
+    for(int i=0;i<7;i++){
+        for(int j=0;j<7;j++){
+            QPixmap pixmap(":/img/img/nada.png");
+            QIcon ButtonIcon(pixmap);
+            m[i][j]->setIcon(ButtonIcon);
+            m[i][j]->setIconSize(pixmap.rect().size());
+        }
+    }
+
+    initGame();
+    game_start = 1;
+    game_end = 0;
+
+    if(first_player == 1){
+        qDebug() << "bot";
+        turn = 1;
+
+        turn = 1;
+        int move = playBot();
+        std::vector<int> vv = possMoves(1);
+
+        if(first_player == 0){
+            QPixmap pixmap1(":/img/img/cao.png");
+            QIcon ButtonIcon1(pixmap1);
+            m[7-move/10][move%10]->setIcon(ButtonIcon1);
+            m[7-move/10][move%10]->setIconSize(m[7-move/10][move%10]->size());
+        }
+        else{
+            QPixmap pixmap1(":/img/img/gato.png");
+            QIcon ButtonIcon1(pixmap1);
+            m[7-move/10][move%10]->setIcon(ButtonIcon1);
+            m[7-move/10][move%10]->setIconSize(m[7-move/10][move%10]->size());
+        }
+
+        if(end()){
+            game_end = 1;
+            if(possMoves(1).size()==0) QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            return;
+        }
+        turn = 0;
+
+        turn = 0;
+        game_start=0;
+    }
+    else turn=0;
+}
+
+void CaesGatos::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    if(arg1=="Human")first_player = 0;
+    else first_player = 1;
+
+    if(game_start && first_player==1){
+        turn = 1;
+
+        turn = 1;
+        int move = playBot();
+        std::vector<int> vv = possMoves(1);
+
+        if(first_player == 0){
+            QPixmap pixmap1(":/img/img/cao.png");
+            QIcon ButtonIcon1(pixmap1);
+            m[7-move/10][move%10]->setIcon(ButtonIcon1);
+            m[7-move/10][move%10]->setIconSize(m[7-move/10][move%10]->size());
+        }
+        else{
+            QPixmap pixmap1(":/img/img/gato.png");
+            QIcon ButtonIcon1(pixmap1);
+            m[7-move/10][move%10]->setIcon(ButtonIcon1);
+            m[7-move/10][move%10]->setIconSize(m[7-move/10][move%10]->size());
+        }
+
+        if(end()){
+            game_end = 1;
+            if(possMoves(1).size()==0) QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            return;
+        }
+        turn = 0;
+
+        turn = 0;
+        game_start=0;
+    }
+}
