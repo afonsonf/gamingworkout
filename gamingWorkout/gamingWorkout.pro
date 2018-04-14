@@ -26,15 +26,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    	semaforo/semaforo.cpp
+    	semaforo/semaforo.cpp \
+    	rastros/rastros.cpp
 
 HEADERS += \
         mainwindow.h \
-    	semaforo/semaforo.h
+    	semaforo/semaforo.h \
+    	rastros/rastros.h
 
 FORMS += \
         mainwindow.ui \
-        semaforo/semaforo.ui
+        semaforo/semaforo.ui \
+    	rastros/rastros.ui
 
 
 RESOURCES += \
