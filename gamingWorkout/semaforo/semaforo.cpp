@@ -9,10 +9,6 @@
 #include <QDebug>
 #include <QMessageBox>
 
-QPushButton *m[3][4];
-int game_end;
-int game_start;
-int first_player;
 
 Semaforo::Semaforo(QWidget *parent,QPushButton *b) :
     QWidget(parent),

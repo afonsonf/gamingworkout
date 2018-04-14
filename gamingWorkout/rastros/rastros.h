@@ -23,11 +23,13 @@ private slots:
 private:
     Ui::rastros *ui;
     QPushButton *back;
+    QPushButton *m[7][7];
 
     int brancaI;
     int brancaJ;
     int pfinal[2][2];
     int turn;
+    int best_play[2];
 
     int max_depth;
 
@@ -40,6 +42,11 @@ private:
     bool playHuman(int i,int j);
     int heuristic();
     void playBot();
+    void AlphaBeta();
+    int min_value(int alfa, int beta, int depth);
+    int max_value(int alfa, int beta, int depth);
+    void init_win();
+    void but_click(int i, int j);
 };
 
 #endif // RASTROS_H

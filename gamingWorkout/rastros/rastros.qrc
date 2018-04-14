@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/img">
         <file>img/rastros.jpg</file>
+        <file>img/1.png</file>
+        <file>img/2.png</file>
+        <file>img/branca.png</file>
+        <file>img/nada.png</file>
+        <file>img/preta.png</file>
     </qresource>
 </RCC>

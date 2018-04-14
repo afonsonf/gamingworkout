@@ -51,7 +51,10 @@ private:
     int lastMoveX;
     int lastMoveY;
     QPushButton *back;
-
+    QPushButton *m[3][4];
+    int game_end;
+    int game_start;
+    int first_player;
 };
 
 #endif // SEMAFORO_H
