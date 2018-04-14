@@ -53,15 +53,14 @@ void rastros::init_win()
 }
 
 void rastros::but_click(int i,int j)
-{
+{/*
     //qDebug() << turn << " " << i << " " << j << ;
-    if(turn!=2 || game_end || (game_start && first_player == 1)) return;
+    if(turn!=0 || game_end || (game_start && first_player == 1)) return;
     if(game_start)game_start =0;
-    if(!validMove(i,j)) return;
+    if(!valid_move(6-i,j)) return;
     //play human
-    playHuman(i,j);
-    lastMoveX=j;
-    lastMoveY=i;
+    playHuman(6-i,j);
+
     switch(board[lastMoveY][lastMoveX]){
         case 'g':{
             m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
@@ -103,7 +102,7 @@ void rastros::but_click(int i,int j)
         QMessageBox::information(this,"Game ended","Perdes-te!\n");
         return;
     }
-    turn = 2;
+    turn = 2;*/
 }
 
 rastros::~rastros()
