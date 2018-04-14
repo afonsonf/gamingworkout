@@ -12,7 +12,7 @@ rastros::rastros(QWidget *parent,QPushButton *b) :
 {
     ui->setupUi(this);
     back = b;
-    max_depth =7;
+    max_depth =10;
     init_win();
     init();
 }
@@ -50,7 +50,7 @@ void rastros::init_win()
     turn = 0;
     game_end=0;
     game_start = 1;
-    first_player = 2;
+    first_player = 0;
 }
 
 void rastros::but_click(int i,int j)
@@ -141,11 +141,11 @@ void rastros::init()
 
     for(int i=0;i<7;i++)
         for(int j=0;j<7;j++) board[i][j]=0;
-
+/*
     for(int i=0;i<7;i++){
         for(int j=0;j<7;j++) std::cout << board[i][j] + " ";
         std::cout << "\n";
-    }
+    }*/
 }
 
 bool rastros::valid_move(int i, int j)
@@ -406,6 +406,7 @@ void rastros::on_new_game_clicked()
     game_end = 0;
 
     if(first_player == 1){
+        qDebug() << "bot";
         turn = 1;
         m[6-brancaI][brancaJ]->setIcon(ButtonIconpreto);
         m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
@@ -430,7 +431,7 @@ void rastros::on_new_game_clicked()
 
 void rastros::on_comboBox_2_currentTextChanged(const QString &arg1)
 {
-    if(arg1=="human")first_player = 0;
+    if(arg1=="Human")first_player = 0;
     else first_player = 1;
 
     QPixmap pixmap1(":/img/img/preta.png");
