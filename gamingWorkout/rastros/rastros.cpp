@@ -73,13 +73,25 @@ void rastros::but_click(int i,int j)
     m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
 
     if(end()){
-        if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
-            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
-        else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
-            QMessageBox::information(this,"Game ended","Perdes-te!\n");
-        else
-            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
-        return;
+        game_end = 1;
+        if(first_player==0){
+            if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            return;
+        }
+        else{
+            if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            return;
+        }
     }
     //play bot
     turn = 1;
@@ -90,13 +102,24 @@ void rastros::but_click(int i,int j)
     m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
     if(end()){
         game_end = 1;
-        if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
-            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
-        else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
-            QMessageBox::information(this,"Game ended","Perdes-te!\n");
-        else
-            QMessageBox::information(this,"Game ended","Perdes-te!\n");
-        return;
+        if(first_player==0){
+            if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            return;
+        }
+        else{
+            if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            return;
+        }
     }
     turn = 0;
 }
