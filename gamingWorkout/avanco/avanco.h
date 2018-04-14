@@ -1,4 +1,4 @@
-#ifndef AVANCO_H
+/*#ifndef AVANCO_H
 #define AVANCO_H
 
 #include <QWidget>
@@ -48,3 +48,4 @@ private:
 };
 
 #endif // AVANCO_H
+*/
