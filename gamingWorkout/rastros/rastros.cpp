@@ -6,6 +6,7 @@ rastros::rastros(QWidget *parent) :
     ui(new Ui::rastros)
 {
     ui->setupUi(this);
+
 }
 
 rastros::~rastros()
