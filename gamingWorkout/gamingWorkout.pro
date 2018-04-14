@@ -29,21 +29,24 @@ SOURCES += \
     	semaforo/semaforo.cpp \
     rastros/rastros.cpp \
     caesGatos/caesgatos.cpp \
-    avanco/avanco.cpp
+    avanco/avanco.cpp \
+    Produto/produto.cpp
 
 HEADERS += \
         mainwindow.h \
     	semaforo/semaforo.h \
     rastros/rastros.h \
     caesGatos/caesgatos.h \
-    avanco/avanco.h
+    avanco/avanco.h \
+    Produto/produto.h
 
 FORMS += \
         mainwindow.ui \
         semaforo/semaforo.ui \
     rastros/rastros.ui \
     caesGatos/caesgatos.ui \
-    avanco/avanco.ui
+    avanco/avanco.ui \
+    Produto/produto.ui
 
 
 RESOURCES += \

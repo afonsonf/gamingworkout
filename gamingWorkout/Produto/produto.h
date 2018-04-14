@@ -23,6 +23,10 @@ private:
 
     int npretas;
     int nbrancas;
+    int turn; //1=human, 2=computer
+    int game_end;
+    int game_start;
+    int first_player;
 
 
     int max_depth;
@@ -33,7 +37,7 @@ private:
     bool validMove(int i,int j);
     std::vector<std::pair<int,int> > possibleMoves();
     bool end();
-    bool playHuman(int i,int j);
+    bool playHuman(int i,int j, int color);
     int heuristic();
     void playBot();
     void AlphaBeta();

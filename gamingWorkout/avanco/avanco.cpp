@@ -1,4 +1,4 @@
-#include "avanco.h"
+/*#include "avanco.h"
 #include "ui_avanco.h"
 
 #include <iostream>
@@ -225,3 +225,4 @@ void avanco::on_pushButton_2_clicked()
     }
     else turn=2;
 }
+*/

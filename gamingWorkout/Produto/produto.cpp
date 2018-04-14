@@ -3,7 +3,7 @@
 
 produto::produto(QWidget *parent,QPushButton *b) :
     QWidget(parent),
-    ui(new Ui::rastros)
+    ui(new Ui::produto)
 {
     ui->setupUi(this);
     back = b;
@@ -13,8 +13,33 @@ produto::~produto()
 {
     delete ui;
 }
+/*
+void produto::init_win()
+{
+    ui->gridLayout->setSpacing(5);
+    for(int i=0;i<9;i++){
+        for(int j=0;j<9;j++){
+            m[i][j] = new QPushButton;
+            m[i][j]->setFixedHeight(200);
+            m[i][j]->setFixedWidth(200);
+            if (std::abs(i-j)<5){
+                connect(m[i][j],&QPushButton::clicked, [=]() {
+                    but_click(i,j);
+                });
+                m[i][j]->setStyleSheet("background-color: white");
+            }
+            else
+                 m[i][j]->setStyleSheet("background-color: none");
+            ui->gridLayout->addWidget(m[i][j],i,j);
+        }
+    }
+    turn = 2;
+    game_end=0;
+    game_start = 1;
+    first_player = 2;
+}*/
 
-void produto::init() 
+void produto::init()
 {
 	for (int i=0;i<9;i++) {
 		for (int j=0;j<9;j++) {
@@ -34,14 +59,16 @@ std::vector<std::pair<int, int> > produto::possibleMoves()
 	for (int i=0;i<9;i++) {
 		for (int j=0;j<9;j++) {
 			if (board[i][j]==0)
-				p.push_back(std::make_pair(i,j));
+                v.push_back(std::make_pair(i,j));
 		}
 	}
+
+    return v;
 }
 
-bool rastros::valid_move(int i, int j)
+bool produto::validMove(int i, int j)
 {
-    return board[i][j] == 0;
+    return (this->board[i][j] == 0);
 }
 
 bool produto::end() 
@@ -54,7 +81,7 @@ bool produto::end()
 
 bool produto::playHuman(int i,int j, int color)
 {
-	if (!valid_move(i,j)) return false;
+    if (!validMove(i,j)) return false;
 	board[i][j]=color;
 	return true;
 }
