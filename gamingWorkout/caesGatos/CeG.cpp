@@ -120,9 +120,9 @@ int playBot()
 {
   int i = alphabetaDecision(5);
 
-  board[p[i]] = 1;
+  board[i] = 1;
 
-  return p[i];
+  return i;
 }
 
 bool playHuman(int move)

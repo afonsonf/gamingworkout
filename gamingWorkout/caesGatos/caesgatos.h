@@ -32,6 +32,19 @@ private:
     int game_start;
     int first_player;
     int turn;
+    int board[100]; // 10*coluna + linha
+    int bestMove;
+    int depthmax;
+
+    bool end();
+    std::vector<int> possMoves(int player);
+    bool playHuman(int move);
+    int playBot();
+    bool validMove(int player, int move);
+    void initGame();
+    int ABminValue(int maxDistanceDepth, int alpha, int beta);
+    int ABmaxValue(int maxDistanceDepth, int alpha, int beta);
+    int alphabetaDecision(int maxDistanceDepth);
 };
 
 #endif // CAESGATOS_H
