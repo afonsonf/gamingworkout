@@ -1,228 +1,127 @@
-/*#include "avanco.h"
-#include "ui_avanco.h"
+#include "avanco.h"
 
 #include <iostream>
-#include <vector>
 #include <utility>
 #include <time.h>
-
-#include <QDebug>
-#include <QMessageBox>
+#include <vector>
 
 
-avanco::avanco(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::avanco)
-{
-    ui->setupUi(this);
-}
+//branco = 1
+//preto = 2
 
-avanco::~avanco()
-{
-    delete ui;
-}
+avanco::avanco(){}
 
-std::array< std::array<char, 7>, 7> avanco::getBoard(){
-    return this->board;
-}
-
-int avanco::getTurn(){
-    return this->turn;
-}
-
-int avanco::getLastMoveX(){
-    return this->lastMoveX;
-}
-
-int avanco::getLastMoveY(){
-    return this->lastMoveY;
+void avanco::initGame () {
+	for (int i=0;i<7;i++) {
+		for (int j=0;j<7;j++) {
+			if (i==0 || i==1)
+				board[i][j] = 2;
+			else if (i==5 || i==6)
+				board[i][j] = 1;
+			else
+				board[i][j] = 0;
+		}
+	}
 }
 
 bool avanco::validMove(int oldY, int oldX, int newY, int newX){
     if(newX > 6 || newX < 0)
         return false;
-    else if(newY > 6 || newY < 0)
-        return false;
-    else if(std::abs(newX - oldX) > 1 || std::abs(newY - oldY) > 1)
-        return false;
-    else if(this->board[oldY][oldX] != turn)
-        return false;
-    else if(this->board[newY][newX] == turn)
-        return false;
-    else if((std::abs(newX - oldX) == 1 && std::abs(newY - oldY) == 0) && this->board[newY][newX] != 0)
-        return false;
-    else if(!(std::abs(newX - oldX) == 0 && std::abs(newY - oldY) == 1) && this->board[newY][newX] != 0)
-        return false;
+    else {
+    	if (turn==0) {
+    		if (newX-oldX!=-1 || -1>newY-oldY>1)
+    			return false;
+    		else{
+    			if (board[newX][newY]==2 && newY-oldY==0)
+    				return false;
+    		}
+    	}
+    	else {    		
+    		if (newX-oldX!=1 || -1>newY-oldY>1)
+    			return false;
+    		else{
+    			if (board[newX][newY]==1 && newY-oldY==0)
+    				return false;
+    		}
+    	}
+    }
 
     return true;
 }
 
-std::vector< std::pair<int, int> > avanco::possibleMoves(){
+std::vector< std::pair<int, int> > avanco::possibleMoves(int i, int j) {
     std::vector< std::pair<int, int> > moves;
+    for (int k=-1;k<2;k++) {
+    	if (this->turn == 0){ //brancas primeiro a jogar, logo em numero par
+    		if (j+k>=0 && j+k<7){
+    			if (k==0 && board[i--][j]==0)
+    				moves.push_back(std::make_pair(i--,j));
+    			if (k!=0 && board[i--][j+k]!=2)
+    				moves.push_back(std::make_pair(i--,j+k));
+    		}
+    	}
+    	else {
+    		if (j+k>=0 && j+k<7){
+    			if (k==0 && board[i++][j]==0)
+    				moves.push_back(std::make_pair(i++,j));
+    			if (k!=0 && board[i++][j+k]!=1)
+    				moves.push_back(std::make_pair(i++,j+k));
 
-    for(int i=0; i<3; i++){
-        for(int j=0; j<4; j++){
-            std::cout << i << j << std::endl;
-            if(validMove(i, j)){
-                std::cout << i << j << std::endl;
-                std::pair<int, int> arr = std::make_pair(i, j);
-                moves.push_back(arr);
-            }
-        }
-    }
+	    	}
+	    }
 
-    std::cout << "Possible moves:" << std::endl;
-    for(unsigned int i=0; i<moves.size(); i++)
-        std::cout << "y: " << moves[i].first << " x: " << moves[i].second << std::endl;
-
-    return moves;
+	}
+	return moves;
 }
 
-void avanco::playHuman(int moveY, int moveX){
-    updateBoard(moveY, moveX);
+void avanco::playHuman(int Xnow, int Ynow,int moveY, int moveX){
+	if (validMove(Ynow,Xnow,moveY,moveX)){
+    	board[Xnow][Ynow] = 0;
+    	if (turn == 0)
+    		board[moveX][moveY] = 1;
+    	else
+    		board[moveX][moveY] = 2;
+
+	}
+    else {
+    	while (!validMove(Ynow,Xnow,moveY,moveX)) {
+    		printf ("Nao e possivel fazer a jogada\n");
+    		scanf ("%d %d", moveX, moveY);
+    	}
+    }
 }
 
 std::pair<int, int> avanco::playBot(){
+	/*
     std::pair<int, int> move = chooseMove();
 
     updateBoard(move.first, move.second);
     lastMoveX = move.second;
     lastMoveY = move.first;
     return move;
+    */
 }
 
 std::pair<int, int> avanco::chooseMove(){
+	/*
     srand (time(NULL));
     std::vector<std::pair<int,int> > v = possibleMoves();
     int i = rand() % v.size();
     return v[i];
+    */
 }
 
-void avanco::updateBoard(int moveY, int moveX){
-    if(this->board[moveY][moveX] == 'w')
-        this->board[moveY][moveX] = 'g';
-    else if(this->board[moveY][moveX] == 'g')
-        this->board[moveY][moveX] = 'y';
-    else if(this->board[moveY][moveX] == 'y')
-        this->board[moveY][moveX] = 'r';
+int avanco::checkGameOver(){
+	for (int i=0;i<7;i++) {
+		if (board[0][i]==1)
+			return 0;
+		if (board[6][i]==2)
+			return 1;
+	}
+	return -1;
 }
 
-bool avanco::checkGameOver(){
-        //horizontal
-        for(int i=0;i<3;i++)
-          for(int j=0;j<2;j++)
-        if(board[i][j]!='w' &&
-           board[i][j+1]==board[i][j] &&
-           board[i][j+2]==board[i][j])
-          return true;
+int main () {
 
-        //vertical
-        for(int j=0;j<4;j++)
-          if(board[0][j]!='w' &&
-         board[1][j]==board[0][j] &&
-         board[2][j]==board[0][j])
-        return true;
-
-        //up-right
-        if(board[2][0]!='w' &&
-           board[1][1]==board[2][0] &&
-           board[0][2]==board[2][0])
-          return true;
-        if(board[2][1]!='w' &&
-           board[1][2]==board[2][1] &&
-           board[0][3]==board[2][1])
-          return true;
-
-        //down-right
-        if(board[0][0]!='w' &&
-           board[1][1]==board[0][0] &&
-           board[2][2]==board[0][0])
-          return true;
-        if(board[0][1]!='w' &&
-           board[1][2]==board[0][1] &&
-           board[2][3]==board[0][1])
-          return true;
-
-        return false;
+	return 0;
 }
-
-void avanco::on_pushButton_clicked()
-{
-    this->possibleMoves();
-}
-
-void avanco::on_sair_clicked()
-{
-    back->click();
-}
-
-void avanco::on_comboBox_2_currentIndexChanged(const QString &arg1)
-{
-    if(arg1=="human")first_player = 2;
-    else first_player = 1;
-
-    if(game_start && first_player==1){
-        turn = 1;
-        playBot();
-        switch(board[lastMoveY][lastMoveX]){
-            case 'g':{
-                m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
-                break;
-            }
-            case 'y':{
-                m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
-                break;
-            }
-            case 'r':{
-                m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
-                break;
-            }
-        }
-        if(checkGameOver()){
-            game_end = 1;
-            QMessageBox::information(this,"Game ended","Perdes-te!\n");
-            return;
-        }
-        turn = 2;
-        game_start=0;
-    }
-}
-
-void avanco::on_pushButton_2_clicked()
-{
-    for(int i=0;i<3;i++){
-        for(int j=0;j<4;j++){
-            m[i][j]->setStyleSheet("background-color: white");
-        }
-    }
-    initGame();
-    game_start = 1;
-    game_end = 0;
-    if(first_player == 1){
-        turn = 1;
-        playBot();
-        switch(board[lastMoveY][lastMoveX]){
-            case 'g':{
-                m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
-                break;
-            }
-            case 'y':{
-                m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
-                break;
-            }
-            case 'r':{
-                m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
-                break;
-            }
-        }
-        if(checkGameOver()){
-            game_end = 1;
-            QMessageBox::information(this,"Game ended","Perdes-te!\n");
-            return;
-        }
-        turn = 2;
-        game_start=0;
-    }
-    else turn=2;
-}
-*/
