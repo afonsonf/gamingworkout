@@ -5,9 +5,9 @@ using namespace std;
 #define black 2
 #define white 1
 
-pair<int,int> branca = make_pair(4,4);
-pair<int,int> casa1 = make_pair(0,0); //casa do jogador 1
-pair<int,int> casa2 = make_pair(6,6); //casa do jogador 2
+pair<int,int> branca = make_pair(2,4);
+pair<int,int> casa1 = make_pair(6,0); //casa do jogador 1
+pair<int,int> casa2 = make_pair(0,6); //casa do jogador 2
 int turn; //1 turno do bot, 0 do jogador
 int first_player;
 int max_depth;
@@ -24,7 +24,7 @@ public:
 	Node () {
 	for (int i=0;i<7;i++){
 		for (int j=0; j<7;j++){
-			if (i==4 && j==4)
+			if (i==2 && j==4)
 				this->config[i][j] = white;
 			else
 				this->config[i][j]=0;
@@ -39,16 +39,16 @@ public:
 	int end() {
 	vector < pair<int,int> > p = this->possible_moves();
 	if (first_player==0) {
-		if (this->config[0][0] == white || (p.size()==0 && turn == 1))
+		if (this->config[6][0] == white || (p.size()==0 && turn == 1))
 			return 0;
-		else if (this->config[6][6] == white || (p.size() == 0 
+		else if (this->config[0][6] == white || (p.size() == 0 
 			&& turn == 0))
 			return 1;
 	}
 	else{ 
-		if (this->config[6][6] == white || (p.size()==0 && turn == 1))
+		if (this->config[0][6] == white || (p.size()==0 && turn == 1))
 			return 0;
-		else if (this->config[0][0] == white || (p.size() == 0 
+		else if (this->config[6][0] == white || (p.size() == 0 
 			&& turn == 0))
 			return 1;		
 	}
