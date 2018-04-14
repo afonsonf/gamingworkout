@@ -17,6 +17,9 @@ public:
     explicit produto(QWidget *parent = 0,QPushButton *b = 0);
     ~produto();
 
+private slots:
+    void on_sair_2_clicked();
+
 private:
     Ui::produto  *ui;
     QPushButton *back;
