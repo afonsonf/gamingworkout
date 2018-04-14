@@ -27,17 +27,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     	semaforo/semaforo.cpp \
-    	rastros/rastros.cpp
 
 HEADERS += \
         mainwindow.h \
     	semaforo/semaforo.h \
-    	rastros/rastros.h
 
 FORMS += \
         mainwindow.ui \
         semaforo/semaforo.ui \
-    	rastros/rastros.ui
 
 
 RESOURCES += \
