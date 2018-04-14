@@ -133,6 +133,20 @@ public:
 		this->config[bia][bja]=white;
 	}
 
+	void print() {
+		for (int i=0; i< 7;i++) {
+			for (int j=0; j<7;j++) {
+				if (this->config[i][j] == white)
+					printf ("1");
+				else if (this->config[i][j] == black)
+					printf ("2");
+				else
+					printf("-");
+			}
+			printf ("\n");
+		}
+	}
+
 };
 
 bool playHuman(Node *x);
@@ -248,7 +262,9 @@ int main () {
 		turn = 0;
 		first_player = 0;
 	}
-	while (x->end()!=-1){
+	x->print();
+	//printf ("k = %d", x->end());
+	while (x->end()!=0 || x->end()!=1){
 		if (turn == 0){
 			bool jog =playHuman(x);
 			while (!jog) {
@@ -258,10 +274,12 @@ int main () {
 			pair<int,int> k = make_pair(li,co);
 			x->play(k);
 			turn = 1; 
+			x->print();
 		}
 		else{ //turn=2 na primeira ronda caso seja o primeiro a jogar
 			playBot(x);
 			turn = 0;
+			x->print();
 		}
 	}
 	
