@@ -111,3 +111,16 @@ int rastros::heuristic(){
     return p1-p0;
 }
 
+void rastros::playBot(){
+    std::vector<std::pair<int,int> > v;
+    v = possible_moves(brancaI,brancaJ);
+    int i = rand() % v.size();
+    board[brancaI][brancaJ] = 1;
+    brancaI = v[i].first;
+    brancaJ = v[i].second;
+}
+
+void rastros::on_sair_clicked()
+{
+    back->click();
+}

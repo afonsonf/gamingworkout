@@ -44,4 +44,5 @@ FORMS += \
 
 
 RESOURCES += \
-    	semaforo/semaforo.qrc
+    	semaforo/semaforo.qrc \
+    rastros/rastros.qrc

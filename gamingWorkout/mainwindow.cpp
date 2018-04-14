@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "semaforo/semaforo.h"
+#include "rastros/rastros.h"
 
 #include <QPushButton>
 #include <QTextEdit>
@@ -24,14 +25,15 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::begin_win(){
-    for(int i=0;i<10;i++){
+    //semaforo
+    {
         QPixmap pixmap(":/img/img/semaforo.png");
         QLabel *img = new QLabel;
         img->setPixmap(pixmap.scaled(200,200,Qt::IgnoreAspectRatio, Qt::FastTransformation));
         img->setFixedHeight(200);
         img->setFixedWidth(200);
         QPushButton *b = new QPushButton("play");
-        QLabel *t = new QLabel("jogo");
+        QLabel *t = new QLabel("jogo semaforo");
         QWidget *wv = new QWidget;
         QWidget *wh = new QWidget;
         QHBoxLayout *hl = new QHBoxLayout;
@@ -45,13 +47,47 @@ void MainWindow::begin_win(){
         ui->games_l->addWidget(wh);
         connect(b,&QPushButton::clicked, [=]() {
             show_s();
-       });
+         });
+    }
+    //rastros
+    {
+        QPixmap pixmap(":/img/img/rastros.jpg");
+        QLabel *img = new QLabel;
+        img->setPixmap(pixmap.scaled(200,200,Qt::IgnoreAspectRatio, Qt::FastTransformation));
+        img->setFixedHeight(200);
+        img->setFixedWidth(200);
+        QPushButton *b = new QPushButton("play");
+        QLabel *t = new QLabel("jogo Rastros");
+        QWidget *wv = new QWidget;
+        QWidget *wh = new QWidget;
+        QHBoxLayout *hl = new QHBoxLayout;
+        QVBoxLayout *vl = new QVBoxLayout;
+        vl->addWidget(t);
+        vl->addWidget(b);
+        wv->setLayout(vl);
+        hl->addWidget(img);
+        hl->addWidget(wv);
+        wh->setLayout(hl);
+        ui->games_l->addWidget(wh);
+        connect(b,&QPushButton::clicked, [=]() {
+            show_r();
+         });
     }
     ui->back->setHidden(true);
 }
 
 void MainWindow::show_s(){
     Semaforo *s = new Semaforo(this,ui->back);
+    //s->show();
+    if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
+    ui->stackedWidget->addWidget(s);
+    ui->stackedWidget->setCurrentIndex(1);
+    ui->back->setHidden(true);
+    //ui->game->;
+}
+
+void MainWindow::show_r(){
+    rastros *s = new rastros(this,ui->back);
     //s->show();
     if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
     ui->stackedWidget->addWidget(s);

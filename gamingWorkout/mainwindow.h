@@ -22,6 +22,7 @@ private:
     Ui::MainWindow *ui;
     void begin_win();
     void show_s();
+    void show_r();
 };
 
 #endif // MAINWINDOW_H

@@ -17,6 +17,9 @@ public:
     explicit rastros(QWidget *parent = 0,QPushButton *b = 0);
     ~rastros();
 
+private slots:
+    void on_sair_clicked();
+
 private:
     Ui::rastros *ui;
     QPushButton *back;
@@ -36,6 +39,7 @@ private:
     bool end();
     bool playHuman(int i,int j);
     int heuristic();
+    void playBot();
 };
 
 #endif // RASTROS_H
