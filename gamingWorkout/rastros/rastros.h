@@ -33,7 +33,7 @@ private:
 
     int max_depth;
 
-    std::array< std::array<int, 7>, 7> board;
+    std::array< std::array<int, 6>, 6> board;
 
     void init();
     bool valid_move(int i,int j);

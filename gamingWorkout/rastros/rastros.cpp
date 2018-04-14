@@ -72,10 +72,10 @@ void rastros::init()
     pfinal[1][0] = 6;
     pfinal[1][1] = 6;
 
-    for(int i=0;i<7;i++)
-        for(int j=0;j<7;j++) board[j][j]=0;
+    for(int i=0;i<6;i++)
+        for(int j=0;j<6;j++) board[j][j]=0;
 
-    turn = 0;
+    turn = 1;
 }
 
 bool rastros::valid_move(int i, int j)
@@ -83,14 +83,14 @@ bool rastros::valid_move(int i, int j)
     return board[i][j] == 0;
 }
 
-std::vector<std::pair<int, int> > rastros::possible_moves(int xi,int xj)
+std::vector<std::pair<int, int> > rastros::possible_moves(int ix,int jx)
 {
     std::vector<std::pair<int,int> > v;
     for(int i=-1;i<2;i++){
         for(int j=-1;j<2;j++){
-            if(xi+i>=0 && xi+i<7 && xj+j>=0 && xj+j<7){
-                if(!(i==0 && j==0) && board[xi+i][xj+j]==0){
-                    v.push_back(std::make_pair(xi+i,xj+j));
+            if(ix+i>=0 && ix+i<6 && jx+j>=0 && jx+j<6){
+                if(!(i==0 && j==0) && board[ix+i][jx+j]==0){
+                    v.push_back(std::make_pair(ix+i,jx+j));
                 }
             }
         }
@@ -114,7 +114,8 @@ bool rastros::playHuman(int i, int j)
     return true;
 }
 
-int rastros::heuristic(){
+int rastros::heuristic()
+{
     if(end()){
         if(brancaI == pfinal[0][0]) return -100;
         if(brancaJ == pfinal[1][0]) return  100;
@@ -155,6 +156,7 @@ int rastros::heuristic(){
     if(p0==-1)p0=0;
     if(p1==-1)p1=0;
     return p1-p0;
+
 }
 
 void rastros::playBot()
@@ -273,7 +275,6 @@ int rastros::max_value(int alpha, int beta, int depth)
     }
 
     return val;
-
 }
 
 void rastros::on_sair_clicked()
