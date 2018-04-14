@@ -32,72 +32,48 @@ int ABmaxValue(int maxDistanceDepth, int alpha, int beta){
     int v = numeric_limits<int>::min();
     int oldv = v;
 
-    vector<int> moves = possMoves();
-    int move = moves[0];
+    vector<int> moves = possMoves(1);
+    int move;
 
     for(unsigned int i=0; i<moves.size(); i++){
-        playBotManual(moves[i]);
+        board[moves[i]] = 1;
         v = max(v, ABminValue(maxDistanceDepth-1, alpha, beta));
+        board[moves[i]] = 0;
         if(oldv != v){
             oldv = v;
             move = moves[i];
         }
 
         if (v >= beta){
-
-
+            bestMove = move;
             return v;
         }
 
         alpha = max(alpha, v);
     }
 
-    if(node->getDepth() <= 1)
-        node->setScore(v);
-    else
-        delete node;
-
+    bestMove = move;
     return v;
 }
 
 int ABminValue(int maxDistanceDepth, int alpha, int beta){
-    visitedNodes++;
-
-    if(node->checkGameOver() || node->getDepth()>=maxDistanceDepth){
-        int util = node->utility(myPiece);
-
-        if(node->getDepth() <= 1)
-            node->setScore(util);
-        else
-            delete node;
-
-        return util;
-    }
+    if(end() || maxDistanceDepth<=0)
+        return utility();
 
     int v = numeric_limits<int>::max();
 
-    array<Node*, 7> descendants = node->makeDescendants(generatedNodes);
+    vector<int> moves = possMoves(2);
 
-    for (int i = 0 ; i<7 && descendants[i]!= NULL ; i++) {
-        v = min(v,ABmaxValue(descendants[i], maxDistanceDepth, myPiece, alpha, beta, generatedNodes, visitedNodes));
+    for(unsigned int i=0; i<moves.size(); i++){
+        board[moves[i]] = 2;
+        v = min(v, ABmaxValue(maxDistanceDepth-1, alpha, beta));
+        board[moves[i]] = 0;
 
-        if (v <= alpha){
-
-            if(node->getDepth() <= 1)
-                node->setScore(v);
-            else
-                delete node;
-
+        if (v <= alpha)
             return v;
-        }
 
         beta = min(beta, v);
     }
-
-    if(node->getDepth() <= 1)
-        node->setScore(v);
-    else
-        delete node;
 
     return v;
 }
@@ -138,13 +114,9 @@ bool validMove(int player,int move) //10*coluna + linha
 
 int playBot()
 {
-  srand(time(NULL));
+  int i = alphabetaDecision(5);
 
-  vector <int> p = possMoves(1);
-
-  int i = rand()%(int)p.size();
   board[p[i]] = 1;
-  updatePoss(1,p[i]);
 
   return p[i];
 }
@@ -155,7 +127,6 @@ bool playHuman(int move)
     return false;
 
   board[move]=2;
-  updatePoss(2,move);
   
   return true;
 }
