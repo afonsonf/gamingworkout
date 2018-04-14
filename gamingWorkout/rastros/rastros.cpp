@@ -2,8 +2,9 @@
 #include "ui_rastros.h"
 
 #include <queue>
-
-
+#include <iostream>
+#include <QMessageBox>
+#include <QDebug>
 
 rastros::rastros(QWidget *parent,QPushButton *b) :
     QWidget(parent),
@@ -11,7 +12,7 @@ rastros::rastros(QWidget *parent,QPushButton *b) :
 {
     ui->setupUi(this);
     back = b;
-
+    max_depth =8;
     init_win();
     init();
 }
@@ -53,56 +54,51 @@ void rastros::init_win()
 }
 
 void rastros::but_click(int i,int j)
-{/*
-    //qDebug() << turn << " " << i << " " << j << ;
+{
+    qDebug()<<0;
     if(turn!=0 || game_end || (game_start && first_player == 1)) return;
     if(game_start)game_start =0;
+    qDebug()<<1;
     if(!valid_move(6-i,j)) return;
+    qDebug()<<2;
     //play human
+    QPixmap pixmap1(":/img/img/preta.png");
+    QIcon ButtonIcon1(pixmap1);
+    m[6-brancaI][brancaJ]->setIcon(ButtonIcon1);
+    m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
     playHuman(6-i,j);
+    QPixmap pixmap2(":/img/img/branca.png");
+    QIcon ButtonIcon2(pixmap2);
+    m[6-brancaI][brancaJ]->setIcon(ButtonIcon2);
+    m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
 
-    switch(board[lastMoveY][lastMoveX]){
-        case 'g':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
-            break;
-        }
-        case 'y':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
-            break;
-        }
-        case 'r':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
-            break;
-        }
-    }
-    if(checkGameOver()){
-        game_end = 1;
-        QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+    if(end()){
+        if(board[brancaI][brancaJ]==pfinal[first_player][0])
+            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+        else if(board[brancaI][brancaJ]!=pfinal[first_player][0])
+            QMessageBox::information(this,"Game ended","Perdes-te!\n");
+        else
+            QMessageBox::information(this,"Game ended","Perdes-te!\n");
         return;
     }
     //play bot
     turn = 1;
+    m[6-brancaI][brancaJ]->setIcon(ButtonIcon1);
+    m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
     playBot();
-    switch(board[lastMoveY][lastMoveX]){
-        case 'g':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
-            break;
-        }
-        case 'y':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
-            break;
-        }
-        case 'r':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
-            break;
-        }
-    }
-    if(checkGameOver()){
+    m[6-brancaI][brancaJ]->setIcon(ButtonIcon2);
+    m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
+    if(end()){
         game_end = 1;
-        QMessageBox::information(this,"Game ended","Perdes-te!\n");
+        if(board[brancaI][brancaJ]==pfinal[first_player][0])
+            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+        else if(board[brancaI][brancaJ]!=pfinal[first_player][0])
+            QMessageBox::information(this,"Game ended","Perdes-te!\n");
+        else
+            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
         return;
     }
-    turn = 2;*/
+    turn = 0;
 }
 
 rastros::~rastros()
@@ -120,13 +116,27 @@ void rastros::init()
     pfinal[1][0] = 6;
     pfinal[1][1] = 6;
 
-    for(int i=0;i<6;i++)
-        for(int j=0;j<6;j++) board[j][j]=0;
+    for(int i=0;i<7;i++)
+        for(int j=0;j<7;j++) board[i][j]=0;
+
+    for(int i=0;i<7;i++){
+        for(int j=0;j<7;j++) std::cout << board[i][j] + " ";
+        std::cout << "\n";
+    }
 }
 
 bool rastros::valid_move(int i, int j)
 {
-    return board[i][j] == 0;
+    int ki,kj;
+    ki = abs(i-brancaI);
+    kj = abs(j-brancaJ);
+    qDebug() <<i<<" "<<j<< " a " << board[i][j] <<" "<<ki<< " " << kj;
+    for(int i=0;i<7;i++){
+        for(int j=0;j<7;j++) std::cout << board[i][j] + " ";
+        std::cout << "\n";
+    }
+
+    return board[i][j] == 0 && ki<=1 && kj<=1;
 }
 
 std::vector<std::pair<int, int> > rastros::possible_moves(int ix,int jx)
@@ -134,7 +144,7 @@ std::vector<std::pair<int, int> > rastros::possible_moves(int ix,int jx)
     std::vector<std::pair<int,int> > v;
     for(int i=-1;i<2;i++){
         for(int j=-1;j<2;j++){
-            if(ix+i>=0 && ix+i<6 && jx+j>=0 && jx+j<6){
+            if(ix+i>=0 && ix+i<7 && jx+j>=0 && jx+j<7){
                 if(!(i==0 && j==0) && board[ix+i][jx+j]==0){
                     v.push_back(std::make_pair(ix+i,jx+j));
                 }
@@ -146,6 +156,7 @@ std::vector<std::pair<int, int> > rastros::possible_moves(int ix,int jx)
 
 bool rastros::end()
 {
+    qDebug() << brancaI << " " << brancaJ << " " <<possible_moves(brancaI,brancaJ).size();
     return (brancaI == pfinal[0][0] && brancaJ == pfinal[0][1]) ||
            (brancaI == pfinal[1][0] && brancaJ == pfinal[1][1]) ||
            (possible_moves(brancaI,brancaJ).size()==0);
@@ -259,9 +270,13 @@ int rastros::min_value(int alpha, int beta, int depth)
             val = u;
         }
 
-        if (val<=alpha)
+        if (val<=alpha){
+            board[nbi][nbj] = 0;
+            board[lpi][lpj] = 0;
+            brancaI = lpi;
+            brancaJ = lpj;
             return val;
-
+        }
         beta = std::min (beta,val);
         depth--;
         board[nbi][nbj] = 0;
@@ -308,9 +323,13 @@ int rastros::max_value(int alpha, int beta, int depth)
             val = u;
         }
 
-        if (val>=beta)
+        if (val>=beta){
+            board[nbi][nbj] = 0;
+            board[lpi][lpj] = 0;
+            brancaI = lpi;
+            brancaJ = lpj;
             return val;
-
+        }
         alpha = std::min (alpha,val);
         depth--;
         board[nbi][nbj] = 0;
