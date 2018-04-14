@@ -48,4 +48,5 @@ FORMS += \
 
 RESOURCES += \
     	semaforo/semaforo.qrc \
-    rastros/rastros.qrc
+    rastros/rastros.qrc \
+    caesGatos/caesgatos.qrc

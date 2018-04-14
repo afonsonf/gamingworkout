@@ -18,9 +18,20 @@ public:
 
     ~CaesGatos();
 
+private slots:
+    void on_sair_clicked();
+
 private:
     Ui::CaesGatos *ui;
     QPushButton *back;
+    QPushButton *m[8][8];
+    void init_win();
+    void but_click(int i, int j);
+
+    int game_end;
+    int game_start;
+    int first_player;
+    int turn;
 };
 
 #endif // CAESGATOS_H

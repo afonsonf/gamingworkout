@@ -1,7 +1,8 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "semaforo/semaforo.h"
 #include "rastros/rastros.h"
+#include "caesGatos/caesgatos.h"
 
 #include <QPushButton>
 #include <QTextEdit>
@@ -73,6 +74,30 @@ void MainWindow::begin_win(){
             show_r();
          });
     }
+    //caes gatos
+    {
+        QPixmap pixmap(":/img/img/caesgatos.jpeg");
+        QLabel *img = new QLabel;
+        img->setPixmap(pixmap.scaled(200,200,Qt::IgnoreAspectRatio, Qt::FastTransformation));
+        img->setFixedHeight(200);
+        img->setFixedWidth(200);
+        QPushButton *b = new QPushButton("play");
+        QLabel *t = new QLabel("jogo Caes e Gatos");
+        QWidget *wv = new QWidget;
+        QWidget *wh = new QWidget;
+        QHBoxLayout *hl = new QHBoxLayout;
+        QVBoxLayout *vl = new QVBoxLayout;
+        vl->addWidget(t);
+        vl->addWidget(b);
+        wv->setLayout(vl);
+        hl->addWidget(img);
+        hl->addWidget(wv);
+        wh->setLayout(hl);
+        ui->games_l->addWidget(wh);
+        connect(b,&QPushButton::clicked, [=]() {
+            show_cG();
+         });
+    }
     ui->back->setHidden(true);
 }
 
@@ -88,6 +113,16 @@ void MainWindow::show_s(){
 
 void MainWindow::show_r(){
     rastros *s = new rastros(this,ui->back);
+    //s->show();
+    if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
+    ui->stackedWidget->addWidget(s);
+    ui->stackedWidget->setCurrentIndex(1);
+    ui->back->setHidden(true);
+    //ui->game->;
+}
+
+void MainWindow::show_cG(){
+    CaesGatos *s = new CaesGatos(this,ui->back);
     //s->show();
     if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
     ui->stackedWidget->addWidget(s);
