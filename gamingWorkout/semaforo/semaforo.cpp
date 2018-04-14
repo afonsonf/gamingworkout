@@ -193,9 +193,24 @@ bool Semaforo::checkGameOver(){
     //verify horizontal
     for(int i=0; i<3; i++){
         for(int j=0; j<2; j++){
+            if(this->board[i][j] != 'w'){
+                n=1;
+                for(int k=1; k<3; k++)
+                    if(this->board[i][j+k] == this->board[i][j])
+                        n++;
+
+                if(n == 3)
+                    return true;
+            }
+        }
+    }
+
+    //verify vertical
+    for(int i=0; i<4; i++){
+        if(this->board[0][i] != 'w'){
             n=1;
             for(int k=1; k<3; k++)
-                if(this->board[i][j+k] == this->board[i][j])
+                if(this->board[k][i] == this->board[0][i])
                     n++;
 
             if(n == 3)
@@ -203,37 +218,30 @@ bool Semaforo::checkGameOver(){
         }
     }
 
-    //verify vertical
-    for(int i=0; i<4; i++){
-        n=1;
-        for(int k=1; k<3; k++)
-            if(this->board[k][i] == this->board[0][i])
-                n++;
-
-        if(n == 3)
-            return true;
-    }
-
     //verify down/right
     for(int i=0; i<2; i++){
-        n=1;
-        for(int k=1; k<3; k++)
-            if(this->board[k][i+k] == this->board[0][i+k])
-                n++;
+        if(this->board[0][i] != 'w'){
+            n=1;
+            for(int k=1; k<3; k++)
+                if(this->board[k][i+k] == this->board[0][i])
+                    n++;
 
-        if(n == 3)
+            if(n == 3)
                 return true;
+        }
     }
 
     //verify down/left
-    for(int i=3; i>1; i++){
-        n=1;
-        for(int k=1; k<3; k++)
-            if(this->board[k][i-k] == this->board[0][i-k])
-                n++;
+    for(int i=3; i>1; i--){
+        if(this->board[0][i] != 'w'){
+            n=1;
+            for(int k=1; k<3; k++)
+                if(this->board[k][i-k] == this->board[0][i])
+                    n++;
 
-        if(n == 3)
-            return true;
+            if(n == 3)
+                return true;
+        }
     }
 
     return false;
