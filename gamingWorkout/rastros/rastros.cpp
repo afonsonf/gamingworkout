@@ -26,10 +26,10 @@ void rastros::init()
     pfinal[1][0] = 6;
     pfinal[1][1] = 6;
 
-    for(int i=0;i<7;i++)
-        for(int j=0;j<7;j++) board[j][j]=0;
+    for(int i=0;i<6;i++)
+        for(int j=0;j<6;j++) board[j][j]=0;
 
-    turn = 0;
+    turn = 1;
 }
 
 bool rastros::valid_move(int i, int j)
@@ -37,14 +37,14 @@ bool rastros::valid_move(int i, int j)
     return board[i][j] == 0;
 }
 
-std::vector<std::pair<int, int> > rastros::possible_moves(int xi,int xj)
+std::vector<std::pair<int, int> > rastros::possible_moves()
 {
     std::vector<std::pair<int,int> > v;
     for(int i=-1;i<2;i++){
         for(int j=-1;j<2;j++){
-            if(xi+i>=0 && xi+i<7 && xj+j>=0 && xj+j<7){
-                if(!(i==0 && j==0) && board[xi+i][xj+j]==0){
-                    v.push_back(std::make_pair(xi+i,xj+j));
+            if(brancaI+i>=0 && brancaI+i<6 && brancaJ+j>=0 && brancaJ+j<6){
+                if(!(i==0 && j==0) && board[brancaI+i][brancaJ+j]==0){
+                    v.push_back(std::make_pair(brancaI+i,brancaJ+j));
                 }
             }
         }
@@ -56,7 +56,7 @@ bool rastros::end()
 {
     return (brancaI == pfinal[0][0] && brancaJ == pfinal[0][1]) ||
            (brancaI == pfinal[1][0] && brancaJ == pfinal[1][1]) ||
-           (possible_moves(brancaI,brancaJ).size()==0);
+           (possible_moves().size()==0);
 }
 
 bool rastros::playHuman(int i, int j)
@@ -68,7 +68,8 @@ bool rastros::playHuman(int i, int j)
     return true;
 }
 
-int rastros::heuristic(){
+int rastros::heuristic()
+{
     if(end()){
         if(brancaI == pfinal[0][0]) return -100;
         if(brancaJ == pfinal[1][0]) return  100;
@@ -109,18 +110,146 @@ int rastros::heuristic(){
     if(p0==-1)p0=0;
     if(p1==-1)p1=0;
     return p1-p0;
+
 }
 
-void rastros::playBot(){
-    std::vector<std::pair<int,int> > v;
-    v = possible_moves(brancaI,brancaJ);
-    int i = rand() % v.size();
-    board[brancaI][brancaJ] = 1;
-    brancaI = v[i].first;
-    brancaJ = v[i].second;
-}
-
-void rastros::on_sair_clicked()
+void rastros::playBot()
 {
-    back->click();
+    AlphaBeta();
+    board[brancaI][brancaJ] = 1;
+    brancaI = best_play[0];
+    brancaJ = best_play[1];
 }
+
+void rastros::AlphaBeta () 
+{
+    int alpha = INT_MIN;
+    int beta =INT_MAX;
+    int depth = 0;
+    if (turn == 0)
+        min_value(alpha,beta,depth);
+    else
+        max_value(alpha,beta,depth);
+
+}
+
+int rastros::min_value(int alpha, int beta, int depth) 
+{   
+    if (end() || depth>=max_depth) {
+        return heuristic();
+    }
+
+    int val = INT_MAX, u;
+
+    std::vector<std::pair<int,int> > p;
+    p = possible_moves();
+    int lpi = brancaI;
+    int lpj = brancaJ;
+    int nbi; //novo i da peca branca
+    int nbj; //novo j da peca branca
+    for (int i = 0; i < (int) p.size(); i++){
+        depth++;
+        nbi = p[i].first;
+        nbj = p[i].second;
+
+        brancaI = nbi;
+        brancaJ = nbj;
+
+        board[lpi][lpj] = 1;
+
+        u = max_value(alpha,beta,depth);
+
+        if (val > u) {
+            if (depth==1){
+                best_play[0] = nbi;
+                best_play[1] = nbj;
+            }
+            val = u;
+        }
+
+        if (val<=alfa)
+            return val;
+
+        beta = std::min (beta,val);
+        depth--;
+        board[nbi][nbp] = 0;
+        board[lpi][lpj] = 0;
+        brancaI = lpi;
+        brancaJ = lpj;
+
+    }
+
+    return val;
+}
+
+int rastros::max_value(int alpha, int beta, int depth)
+{  
+    if (end() || depth>=max_depth) {
+        return heuristic();
+    }
+
+    int val = INT_MIN, u;
+
+    std::vector<std::pair<int,int> > p;
+    p = possible_moves();
+    int lpi = brancaI;
+    int lpj = brancaJ;
+    int nbi; //novo i da peca branca
+    int nbj; //novo j da peca branca
+    for (int i = 0; i < (int) p.size(); i++){
+        depth++;
+        nbi = p[i].first;
+        nbj = p[i].second;
+
+        brancaI = nbi;
+        brancaJ = nbj;
+
+        board[lpi][lpj] = 1;
+
+        u = min_value(alpha,beta,depth);
+
+        if (val < u) {
+            if (depth==1){
+                best_play[0] = nbi;
+                best_play[1] = nbj;
+            }
+            val = u;
+        }
+
+        if (val>=beta)
+            return val;
+
+        alpha = std::min (alpha,val);
+        depth--;
+        board[nbi][nbp] = 0;
+        board[lpi][lpj] = 0;
+        brancaI = lpi;
+        brancaJ = lpj;
+
+    }
+
+    return val;
+
+}
+
+void rastros:print (){
+        for (int i=0; i< 7;i++) {
+            printf ("%d ",i);
+            for (int j=0; j<7;j++) {
+                if (board[i][j] == 1)
+                    printf (" B");
+                else if (board[i][j] == 0 && (i==brancaI && j == brancaJ))
+                    printf (" W");
+                else
+                    printf(" -");
+            }
+            printf ("\n");
+        }
+        printf ("  ");
+        for (int i=0;i<7;i++)
+            printf (" %d",i);
+        printf ("\n");
+
+
+}
+
