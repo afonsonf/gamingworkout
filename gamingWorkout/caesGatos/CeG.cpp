@@ -26,8 +26,10 @@ int alphabetaDecision(int maxDistanceDepth){
 }
 
 int ABmaxValue(int maxDistanceDepth, int alpha, int beta){
-    if(end() || maxDistanceDepth<=0)
-        return utility();
+    if(end())
+        return -100;
+    else if(maxDistanceDepth<=0)
+        return possMoves(1).size() - possMoves(2).size();
 
     int v = numeric_limits<int>::min();
     int oldv = v;
@@ -57,8 +59,10 @@ int ABmaxValue(int maxDistanceDepth, int alpha, int beta){
 }
 
 int ABminValue(int maxDistanceDepth, int alpha, int beta){
-    if(end() || maxDistanceDepth<=0)
-        return utility();
+    if(end())
+        return 100;
+    else if(maxDistanceDepth<=0)
+        return possMoves(1).size() - possMoves(2).size();
 
     int v = numeric_limits<int>::max();
 
