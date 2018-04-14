@@ -1,23 +1,17 @@
 #include <bits/stdc++.h>
-#include <limits>
-#include <utility>
-#include <vector>
 
 using namespace std;
 
-int np1,np2;
 int board[100]; // 10*coluna + linha
-bool pm1[100];
-bool pm2[100];
 int bestMove;
+int start_game;
 
 void initGame();
 bool validMove(int player,int move);
 int playBot();
-bool playBotManual(int move);
 bool playHuman(int move);
+void undoPlay(int move);
 vector<int> possMoves(int player);
-void updatePoss(int player,int move);
 bool end();
 
 int alphabetaDecision(int maxDistanceDepth);
@@ -111,23 +105,34 @@ int ABminValue(int maxDistanceDepth, int alpha, int beta){
 void initGame()
 {
   for(int i=0;i<100;i++)
-    {
       board[i] = 0;
-      pm1[i]=true;
-      pm2[i]=true;
-    }
 
-  np1=np2=64;
+  start_game=0;
 }
 
 bool validMove(int player,int move) //10*coluna + linha
 {
-  if((player==1 && !pm1[move]) || (player==2 && !pm2[move]))
+  if(player==1)
+    {
+      if((move>=10 && board[move-10]==2) ||
+	 (move%10>0 && board[move-1]==2) ||
+	 (move<70 && board[move+10]==2)  ||
+	 (move%10<7 && board[move+1]==2))
+	return false;
+    }
+  else
+    {
+      if((move>=10 && board[move-10]==1) ||
+	 (move%10>0 && board[move-1]==1) ||
+	 (move<70 && board[move+10]==1)  ||
+	 (move%10<7 && board[move+1]==1))
+	return false;
+    }
+
+  if(!start_game && move!=33 && move!=34 && move!=43 && move!=44)
     return false;
 
-  if(np1==64 && np2==64 && move!=33 && move!=34 && move!=43 && move!=44)
-    return false;
-
+  
   return true;
 }
 
@@ -155,43 +160,10 @@ bool playHuman(int move)
   return true;
 }
 
-bool playBotManual(int move)
-{
-  if(!validMove(1,move))
-    return false;
-
-  board[move]=1;
-  updatePoss(1,move);
-
-  return true;
-}
-
-bool unplayHuman(int move)
-{
-  if(!validMove(2,move))
-    return false;
-
-  board[move]=2;
-  updatePoss(2,move);
-
-  return true;
-}
-
-bool unplayBotManual(int move)
-{
-  if(!validMove(1,move))
-    return false;
-
-  board[move]=1;
-  updatePoss(1,move);
-
-  return true;
-}
-
 vector<int> possMoves(int player)
 {
- vector <int> v;
-  if(np1==64 && np2==64)
+  vector <int> v;
+  if(!start_game)
     {
       v.push_back(33);
       v.push_back(34);
@@ -204,162 +176,24 @@ vector<int> possMoves(int player)
     {
       for(int i=0;i<8;i++)
 	for(int j=0;j<8;j++)
-	  if(pm1[i*10+j])
+	  if(validMove(1,i*10+j))
 	    v.push_back(i*10+j);
     }
   else
     {
       for(int i=0;i<8;i++)
 	for(int j=0;j<8;j++)
-	  if(pm2[i*10+j])
+	  if(validMove(2,i*10+j))
 	    v.push_back(i*10+j);
     }
   return v;
 }
 
-void updatePoss(int player, int move)
-{
-  if(player==1)
-    {
-      np1--;
-      pm1[move]=false;
-      if(pm2[move])
-	np2--;
-      pm2[move] = false;
-      if(move>10)
-	{
-	  if(pm2[move-10])
-	    np2--;
-	  pm2[move-10] = false;
-	}
-      if(move%10>0)
-	{
-	  if(pm2[move-1])
-	    np2--;
-	  pm2[move-1] = false;
-	}
-      if(move<70)
-	{
-	  if(pm2[move+10])
-	    np2--;
-	  pm2[move+10] = false;
-	}
-      if(move%10<7)
-	{
-	  if(pm2[move+1])
-	    np2--;
-	  pm2[move+1] = false;
-	}
-    }
-  else
-    {
-      np2--;
-      pm2[move]=false;
-      
-      if(pm1[move])
-	np1--;
-      pm1[move] = false;
-      
-      if(move>=10)
-	{
-	  if(pm1[move-10])
-	    np1--;
-	  pm1[move-10] = false;
-	}
-      if(move%10>0)
-	{
-	  if(pm1[move-1])
-	    np1--;
-	  pm1[move-1] = false;
-	}
-      if(move<70)
-	{
-	  if(pm1[move+10])
-	    np1--;
-	  pm1[move+10] = false;
-	}
-      if(move%10<7)
-	{
-	  if(pm1[move+1])
-	    np1--;
-	  pm1[move+1] = false;
-	}
-    }
-}
-
-void unupdatePoss(int player, int move)
-{
-  if(player==1)
-    {
-      np1++;
-      pm1[move]=false;
-      if(pm2[move])
-        np2--;
-      pm2[move] = false;
-      if(move>10)
-        {
-          if(pm2[move-10])
-            np2--;
-          pm2[move-10] = false;
-        }
-      if(move%10>0)
-        {
-          if(pm2[move-1])
-            np2--;
-          pm2[move-1] = false;
-        }
-      if(move<70)
-        {
-          if(pm2[move+10])
-            np2--;
-          pm2[move+10] = false;
-        }
-      if(move%10<7)
-        {
-          if(pm2[move+1])
-            np2--;
-          pm2[move+1] = false;
-        }
-    }
-  else
-    {
-      np2--;
-      pm2[move]=false;
-
-      if(pm1[move])
-        np1--;
-      pm1[move] = false;
-
-      if(move>=10)
-        {
-          if(pm1[move-10])
-            np1--;
-          pm1[move-10] = false;
-        }
-      if(move%10>0)
-        {
-          if(pm1[move-1])
-            np1--;
-          pm1[move-1] = false;
-        }
-      if(move<70)
-        {
-          if(pm1[move+10])
-            np1--;
-          pm1[move+10] = false;
-        }
-      if(move%10<7)
-        {
-          if(pm1[move+1])
-            np1--;
-          pm1[move+1] = false;
-        }
-    }
-}
-
-
 bool end()
 {
+  int np1 = possMoves(1).size();
+  int np2 = possMoves(2).size();
+  
   return (np1*np2)==0;
 }
 
