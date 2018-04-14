@@ -42,7 +42,6 @@ private:
     void AlphaBeta();
     int min_value(int alfa, int beta, int depth);
     int max_value(int alfa, int beta, int depth);
-    void print();
 };
 
 #endif // RASTROS_H

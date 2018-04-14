@@ -231,25 +231,3 @@ int rastros::max_value(int alpha, int beta, int depth)
     return val;
 
 }
-
-void rastros:print (){
-        for (int i=0; i< 7;i++) {
-            printf ("%d ",i);
-            for (int j=0; j<7;j++) {
-                if (board[i][j] == 1)
-                    printf (" B");
-                else if (board[i][j] == 0 && (i==brancaI && j == brancaJ))
-                    printf (" W");
-                else
-                    printf(" -");
-            }
-            printf ("\n");
-        }
-        printf ("  ");
-        for (int i=0;i<7;i++)
-            printf (" %d",i);
-        printf ("\n");
-
-
-}
-
