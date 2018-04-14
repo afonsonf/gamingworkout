@@ -23,6 +23,7 @@ private:
     void begin_win();
     void show_s();
     void show_r();
+    void show_cG();
 };
 
 #endif // MAINWINDOW_H

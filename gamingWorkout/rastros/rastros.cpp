@@ -12,7 +12,7 @@ rastros::rastros(QWidget *parent,QPushButton *b) :
 {
     ui->setupUi(this);
     back = b;
-    max_depth =10;
+    max_depth =12;
     init_win();
     init();
 }
@@ -59,7 +59,11 @@ void rastros::but_click(int i,int j)
     if(turn!=0 || game_end || (game_start && first_player == 1)) return;
     if(game_start)game_start =0;
     qDebug()<<1;
-    if(!valid_move(6-i,j)) return;
+    if(!valid_move(6-i,j)){
+        ui->mensagem->setText("invalid move");
+        return;
+    }
+    ui->mensagem->setText("");
     qDebug()<<2;
     //play human
     QPixmap pixmap1(":/img/img/preta.png");
@@ -97,7 +101,9 @@ void rastros::but_click(int i,int j)
     turn = 1;
     m[6-brancaI][brancaJ]->setIcon(ButtonIcon1);
     m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
+    ui->mensagem->setText("thinking");
     playBot();
+    ui->mensagem->setText("");
     m[6-brancaI][brancaJ]->setIcon(ButtonIcon2);
     m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
     if(end()){
