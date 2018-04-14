@@ -12,7 +12,7 @@ rastros::rastros(QWidget *parent,QPushButton *b) :
 {
     ui->setupUi(this);
     back = b;
-    max_depth =10;
+    max_depth =12;
     init_win();
     init();
 }
