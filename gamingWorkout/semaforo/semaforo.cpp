@@ -63,6 +63,7 @@ void Semaforo::initGame() {
 
 void Semaforo::but_click(int i,int j)
 {
+    //qDebug() << turn << " " << i << " " << j << ;
     if(turn!=2 || game_end || (game_start && first_player == 1)) return;
     if(game_start)game_start =0;
     if(!validMove(i,j)) return;
@@ -70,7 +71,6 @@ void Semaforo::but_click(int i,int j)
     playHuman(i,j);
     lastMoveX=j;
     lastMoveY=i;
-    qDebug() << turn << " " << i << " " << j << " " << board[lastMoveY][lastMoveX] << "0";
     switch(board[lastMoveY][lastMoveX]){
         case 'g':{
             m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
@@ -193,11 +193,10 @@ void Semaforo::updateBoard(int moveY, int moveX){
 }
 
 bool Semaforo::checkGameOver(){
-   // return false;
     int n;
     //verify horizontal
-    for(int i=0; i<3; i++){
-        for(int j=0; j<2; j++){
+    for(int i=0; i<2; i++){
+        for(int j=0; j<3; j++){
             if(this->board[i][j] != 'w'){
                 n=1;
                 for(int k=1; k<3; k++)
@@ -266,6 +265,7 @@ void Semaforo::on_comboBox_2_currentIndexChanged(const QString &arg1)
 {
     if(arg1=="human")first_player = 2;
     else first_player = 1;
+
     if(game_start && first_player==1){
         turn = 1;
         playBot();
@@ -302,6 +302,7 @@ void Semaforo::on_pushButton_2_clicked()
     }
     initGame();
     game_start = 1;
+    game_end = 0;
     if(first_player == 1){
         turn = 1;
         playBot();
