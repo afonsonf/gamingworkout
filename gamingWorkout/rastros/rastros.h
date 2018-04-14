@@ -20,6 +20,10 @@ public:
 private slots:
     void on_sair_clicked();
 
+    void on_new_game_clicked();
+
+    void on_comboBox_2_currentTextChanged(const QString &arg1);
+
 private:
     Ui::rastros *ui;
     QPushButton *back;

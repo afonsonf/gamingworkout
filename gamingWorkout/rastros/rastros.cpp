@@ -12,7 +12,7 @@ rastros::rastros(QWidget *parent,QPushButton *b) :
 {
     ui->setupUi(this);
     back = b;
-    max_depth =8;
+    max_depth =7;
     init_win();
     init();
 }
@@ -73,12 +73,12 @@ void rastros::but_click(int i,int j)
     m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
 
     if(end()){
-        if(board[brancaI][brancaJ]==pfinal[first_player][0])
+        if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
             QMessageBox::information(this,"Game ended","Ganhas-te!\n");
-        else if(board[brancaI][brancaJ]!=pfinal[first_player][0])
+        else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
             QMessageBox::information(this,"Game ended","Perdes-te!\n");
         else
-            QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
         return;
     }
     //play bot
@@ -90,12 +90,12 @@ void rastros::but_click(int i,int j)
     m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
     if(end()){
         game_end = 1;
-        if(board[brancaI][brancaJ]==pfinal[first_player][0])
+        if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
             QMessageBox::information(this,"Game ended","Ganhas-te!\n");
-        else if(board[brancaI][brancaJ]!=pfinal[first_player][0])
+        else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
             QMessageBox::information(this,"Game ended","Perdes-te!\n");
         else
-            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            QMessageBox::information(this,"Game ended","Perdes-te!\n");
         return;
     }
     turn = 0;
@@ -130,11 +130,11 @@ bool rastros::valid_move(int i, int j)
     int ki,kj;
     ki = abs(i-brancaI);
     kj = abs(j-brancaJ);
-    qDebug() <<i<<" "<<j<< " a " << board[i][j] <<" "<<ki<< " " << kj;
+    /*qDebug() <<i<<" "<<j<< " a " << board[i][j] <<" "<<ki<< " " << kj;
     for(int i=0;i<7;i++){
         for(int j=0;j<7;j++) std::cout << board[i][j] + " ";
         std::cout << "\n";
-    }
+    }*/
 
     return board[i][j] == 0 && ki<=1 && kj<=1;
 }
@@ -156,7 +156,7 @@ std::vector<std::pair<int, int> > rastros::possible_moves(int ix,int jx)
 
 bool rastros::end()
 {
-    qDebug() << brancaI << " " << brancaJ << " " <<possible_moves(brancaI,brancaJ).size();
+    //qDebug() << brancaI << " " << brancaJ << " " <<possible_moves(brancaI,brancaJ).size();
     return (brancaI == pfinal[0][0] && brancaJ == pfinal[0][1]) ||
            (brancaI == pfinal[1][0] && brancaJ == pfinal[1][1]) ||
            (possible_moves(brancaI,brancaJ).size()==0);
@@ -229,10 +229,12 @@ void rastros::AlphaBeta ()
     int alpha = INT_MIN;
     int beta =INT_MAX;
     int depth = 0;
-    if (turn == 0)
+    if (first_player == 1)
         min_value(alpha,beta,depth);
-    else
+    else{
         max_value(alpha,beta,depth);
+        qDebug()<<"max!!\n";
+    }
 
 }
 
@@ -345,4 +347,92 @@ int rastros::max_value(int alpha, int beta, int depth)
 void rastros::on_sair_clicked()
 {
     back->click();
+}
+
+void rastros::on_new_game_clicked()
+{
+    for(int i=0;i<7;i++){
+        for(int j=0;j<7;j++){
+            QPixmap pixmap(":/img/img/nada.png");
+            QIcon ButtonIcon(pixmap);
+            m[i][j]->setIcon(ButtonIcon);
+            m[i][j]->setIconSize(pixmap.rect().size());
+        }
+    }
+    qDebug()<<"new game";
+    QPixmap pixmap1(":/img/img/1.png");
+    QIcon ButtonIcon1(pixmap1);
+    m[6][0]->setIcon(ButtonIcon1);
+    m[6][0]->setIconSize(m[6][0]->size());
+    QPixmap pixmap2(":/img/img/2.png");
+    QIcon ButtonIcon2(pixmap2);
+    m[0][6]->setIcon(ButtonIcon2);
+    m[0][6]->setIconSize(m[0][6]->size());
+    QPixmap pixmap3(":/img/img/branca.png");
+    QIcon ButtonIcon3(pixmap3);
+    m[2][4]->setIcon(ButtonIcon3);
+    m[2][4]->setIconSize(m[2][4]->size());
+
+    QPixmap pixmapx0(":/img/img/preta.png");
+    QIcon ButtonIconpreto(pixmapx0);
+    QPixmap pixmapx1(":/img/img/branca.png");
+    QIcon ButtonIconbranco(pixmapx1);
+
+    init();
+    game_start = 1;
+    game_end = 0;
+
+    if(first_player == 1){
+        turn = 1;
+        m[6-brancaI][brancaJ]->setIcon(ButtonIconpreto);
+        m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
+        playBot();
+        m[6-brancaI][brancaJ]->setIcon(ButtonIconbranco);
+        m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
+        if(end()){
+            game_end = 1;
+            if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            return;
+        }
+        turn = 0;
+        game_start=0;
+    }
+    else turn=0;
+}
+
+void rastros::on_comboBox_2_currentTextChanged(const QString &arg1)
+{
+    if(arg1=="human")first_player = 0;
+    else first_player = 1;
+
+    QPixmap pixmap1(":/img/img/preta.png");
+    QIcon ButtonIcon1(pixmap1);
+    QPixmap pixmap2(":/img/img/branca.png");
+    QIcon ButtonIcon2(pixmap2);
+
+    if(game_start && first_player==1){
+        turn = 1;
+        m[6-brancaI][brancaJ]->setIcon(ButtonIcon1);
+        m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
+        playBot();
+        m[6-brancaI][brancaJ]->setIcon(ButtonIcon2);
+        m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
+        if(end()){
+            game_end = 1;
+            if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            return;
+        }
+        turn = 0;
+        game_start=0;
+    }
 }
