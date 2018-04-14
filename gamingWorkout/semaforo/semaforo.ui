@@ -95,20 +95,6 @@
        </item>
       </widget>
      </item>
-     <item>
-      <widget class="Line" name="line">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Start</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
