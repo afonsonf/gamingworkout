@@ -193,7 +193,7 @@ void Semaforo::updateBoard(int moveY, int moveX){
 }
 
 bool Semaforo::checkGameOver(){
-    return false;
+   // return false;
     int n;
     //verify horizontal
     for(int i=0; i<3; i++){
@@ -266,6 +266,31 @@ void Semaforo::on_comboBox_2_currentIndexChanged(const QString &arg1)
 {
     if(arg1=="human")first_player = 2;
     else first_player = 1;
+    if(game_start && first_player==1){
+        turn = 1;
+        playBot();
+        switch(board[lastMoveY][lastMoveX]){
+            case 'g':{
+                m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
+                break;
+            }
+            case 'y':{
+                m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
+                break;
+            }
+            case 'r':{
+                m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
+                break;
+            }
+        }
+        if(checkGameOver()){
+            game_end = 1;
+            QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            return;
+        }
+        turn = 2;
+        game_start=0;
+    }
 }
 
 void Semaforo::on_pushButton_2_clicked()
