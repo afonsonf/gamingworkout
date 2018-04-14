@@ -1,4 +1,7 @@
-#include <bits/stdc++.h>
+#include <stdio.h>
+#include <vector>
+#include <queue>
+#include <limits.h>
 
 using namespace std;
 
@@ -118,9 +121,10 @@ public:
 					}
 				}
 			}
-
+			
 		}
 		branca = branca2;
+		return 0;
 	}
 
 	void removep (pair<int,int> lp,pair<int,int> lb) {

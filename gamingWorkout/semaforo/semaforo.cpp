@@ -1,4 +1,4 @@
-#include "semaforo/semaforo.h"
+#include "semaforo.h"
 #include "ui_semaforo.h"
 
 #include <iostream>
@@ -8,8 +8,6 @@
 
 #include <QDebug>
 #include <QMessageBox>
-
-QPushButton *back;
 
 QPushButton *m[3][4];
 int game_end;
@@ -193,62 +191,42 @@ void Semaforo::updateBoard(int moveY, int moveX){
 }
 
 bool Semaforo::checkGameOver(){
-    int n;
-    //verify horizontal
-    for(int i=0; i<2; i++){
-        for(int j=0; j<3; j++){
-            if(this->board[i][j] != 'w'){
-                n=1;
-                for(int k=1; k<3; k++)
-                    if(this->board[i][j+k] == this->board[i][j])
-                        n++;
+        //horizontal
+        for(int i=0;i<3;i++)
+          for(int j=0;j<2;j++)
+        if(board[i][j]!='w' &&
+           board[i][j+1]==board[i][j] &&
+           board[i][j+2]==board[i][j])
+          return true;
 
-                if(n == 3)
-                    return true;
-            }
-        }
-    }
+        //vertical
+        for(int j=0;j<4;j++)
+          if(board[0][j]!='w' &&
+         board[1][j]==board[0][j] &&
+         board[2][j]==board[0][j])
+        return true;
 
-    //verify vertical
-    for(int i=0; i<4; i++){
-        if(this->board[0][i] != 'w'){
-            n=1;
-            for(int k=1; k<3; k++)
-                if(this->board[k][i] == this->board[0][i])
-                    n++;
+        //up-right
+        if(board[2][0]!='w' &&
+           board[1][1]==board[2][0] &&
+           board[0][2]==board[2][0])
+          return true;
+        if(board[2][1]!='w' &&
+           board[1][2]==board[2][1] &&
+           board[0][3]==board[2][1])
+          return true;
 
-            if(n == 3)
-                return true;
-        }
-    }
+        //down-right
+        if(board[0][0]!='w' &&
+           board[1][1]==board[0][0] &&
+           board[2][2]==board[0][0])
+          return true;
+        if(board[0][1]!='w' &&
+           board[1][2]==board[0][1] &&
+           board[2][3]==board[0][1])
+          return true;
 
-    //verify down/right
-    for(int i=0; i<2; i++){
-        if(this->board[0][i] != 'w'){
-            n=1;
-            for(int k=1; k<3; k++)
-                if(this->board[k][i+k] == this->board[0][i])
-                    n++;
-
-            if(n == 3)
-                return true;
-        }
-    }
-
-    //verify down/left
-    for(int i=3; i>1; i--){
-        if(this->board[0][i] != 'w'){
-            n=1;
-            for(int k=1; k<3; k++)
-                if(this->board[k][i-k] == this->board[0][i])
-                    n++;
-
-            if(n == 3)
-                return true;
-        }
-    }
-
-    return false;
+        return false;
 }
 
 void Semaforo::on_pushButton_clicked()

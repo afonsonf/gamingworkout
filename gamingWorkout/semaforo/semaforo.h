@@ -50,6 +50,8 @@ private:
     int turn; //1=human, 2=computer
     int lastMoveX;
     int lastMoveY;
+    QPushButton *back;
+
 };
 
 #endif // SEMAFORO_H
