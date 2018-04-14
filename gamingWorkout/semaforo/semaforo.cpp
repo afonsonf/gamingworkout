@@ -193,11 +193,10 @@ void Semaforo::updateBoard(int moveY, int moveX){
 }
 
 bool Semaforo::checkGameOver(){
-    return false;
     int n;
     //verify horizontal
-    for(int i=0; i<3; i++){
-        for(int j=0; j<2; j++){
+    for(int i=0; i<2; i++){
+        for(int j=0; j<3; j++){
             if(this->board[i][j] != 'w'){
                 n=1;
                 for(int k=1; k<3; k++)
