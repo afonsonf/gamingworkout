@@ -12,7 +12,7 @@ rastros::rastros(QWidget *parent,QPushButton *b) :
 {
     ui->setupUi(this);
     back = b;
-    max_depth =12;
+    max_depth =14;
     init_win();
     init();
 }
@@ -97,11 +97,14 @@ void rastros::but_click(int i,int j)
             return;
         }
     }
-    //play bot
+    //bot
+    ui->mensagem->setText("thinking");
+    QCoreApplication::processEvents();
+
     turn = 1;
     m[6-brancaI][brancaJ]->setIcon(ButtonIcon1);
     m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
-    ui->mensagem->setText("thinking");
+
     playBot();
     ui->mensagem->setText("");
     m[6-brancaI][brancaJ]->setIcon(ButtonIcon2);
@@ -165,7 +168,7 @@ bool rastros::valid_move(int i, int j)
         std::cout << "\n";
     }*/
 
-    return board[i][j] == 0 && ki<=1 && kj<=1 && !(i!=brancaI && j!=brancaJ);
+    return board[i][j] == 0 && ki<=1 && kj<=1 && !(i==brancaI && j==brancaJ);
 }
 
 std::vector<std::pair<int, int> > rastros::possible_moves(int ix,int jx)

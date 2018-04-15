@@ -28,6 +28,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::begin_win(){
     QFrame* line;
+    this->setStyleSheet("background-color: ##9999ff");
+    //ui->page->setStyleSheet("background-color: #ffffff");
 
     //semaforo
     {
@@ -48,6 +50,7 @@ void MainWindow::begin_win(){
         hl->addWidget(img);
         hl->addWidget(wv);
         wh->setLayout(hl);
+        wh->setStyleSheet("background-color: #99ff66");
         ui->games_l->addWidget(wh);
         connect(b,&QPushButton::clicked, [=]() {
             show_s();
@@ -77,6 +80,7 @@ void MainWindow::begin_win(){
         hl->addWidget(img);
         hl->addWidget(wv);
         wh->setLayout(hl);
+        wh->setStyleSheet("background-color: #ffcc66");
         ui->games_l->addWidget(wh);
         connect(b,&QPushButton::clicked, [=]() {
             show_r();
@@ -106,6 +110,7 @@ void MainWindow::begin_win(){
         hl->addWidget(img);
         hl->addWidget(wv);
         wh->setLayout(hl);
+        wh->setStyleSheet("background-color: #ccffff");
         ui->games_l->addWidget(wh);
         connect(b,&QPushButton::clicked, [=]() {
             show_cG();
@@ -135,6 +140,7 @@ void MainWindow::begin_win(){
         hl->addWidget(img);
         hl->addWidget(wv);
         wh->setLayout(hl);
+         wh->setStyleSheet("background-color: #ffff66");
         ui->games_l->addWidget(wh);
         connect(b,&QPushButton::clicked, [=]() {
             show_p();
@@ -144,14 +150,14 @@ void MainWindow::begin_win(){
 }
 
 void MainWindow::show_s(){
-    Semaforo *s = new Semaforo(this,ui->back);
+    /*Semaforo *s = new Semaforo(this,ui->back);
     //s->show();
     if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
     ui->stackedWidget->addWidget(s);
     ui->stackedWidget->setCurrentIndex(1);
     ui->back->setHidden(true);
     //ui->game->;
-}
+*/}
 
 void MainWindow::show_r(){
     rastros *s = new rastros(this,ui->back);

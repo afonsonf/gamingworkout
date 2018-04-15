@@ -87,58 +87,7 @@ void Semaforo::initGame() {
 
 void Semaforo::but_click(int i,int j)
 {
-<<<<<<< HEAD
-  //qDebug() << turn << " " << i << " " << j << ;
-  if(turn!=2 || game_end || (game_start && first_player == 1)) return;
-  if(game_start)game_start =0;
-  if(!validMove(i,j)) return;
-  //play human
-  playHuman(i,j);
-  lastMoveX=j;
-  lastMoveY=i;
-  switch(board[lastMoveY][lastMoveX]){
-  case 'g':{
-    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
-    break;
-  }
-  case 'y':{
-    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
-    break;
-  }
-  case 'r':{
-    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
-    break;
-  }
-  }
-  if(checkGameOver()){
-    game_end = 1;
-    QMessageBox::information(this,"Game ended","Ganhas-te!\n");
-    return;
-  }
-  //play bot
-  turn = 1;
-  playBot();
-  switch(board[lastMoveY][lastMoveX]){
-  case 'g':{
-    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
-    break;
-  }
-  case 'y':{
-    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
-    break;
-  }
-  case 'r':{
-    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
-    break;
-  }
-  }
-  if(checkGameOver()){
-    game_end = 1;
-    QMessageBox::information(this,"Game ended","Perdes-te!\n");
-    return;
-  }
-  turn = 2;
-=======
+<<<<<<< 4278be785ad34aab7e6c0571b7d6f8430afc7061
     //qDebug() << turn << " " << i << " " << j << ;
     if(turn!=2 || game_end || (game_start && first_player == 1)) return;
     if(game_start)game_start =0;
@@ -195,7 +144,58 @@ void Semaforo::but_click(int i,int j)
         return;
     }
     turn = 2;
->>>>>>> badf7e0447a3e5f0bd4933f9cd47824699974a4e
+=======
+  //qDebug() << turn << " " << i << " " << j << ;
+  if(turn!=2 || game_end || (game_start && first_player == 1)) return;
+  if(game_start)game_start =0;
+  if(!validMove(i,j)) return;
+  //play human
+  playHuman(i,j);
+  lastMoveX=j;
+  lastMoveY=i;
+  switch(board[lastMoveY][lastMoveX]){
+  case 'g':{
+    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
+    break;
+  }
+  case 'y':{
+    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
+    break;
+  }
+  case 'r':{
+    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
+    break;
+  }
+  }
+  if(checkGameOver()){
+    game_end = 1;
+    QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+    return;
+  }
+  //play bot
+  turn = 1;
+  playBot();
+  switch(board[lastMoveY][lastMoveX]){
+  case 'g':{
+    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
+    break;
+  }
+  case 'y':{
+    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
+    break;
+  }
+  case 'r':{
+    m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
+    break;
+  }
+  }
+  if(checkGameOver()){
+    game_end = 1;
+    QMessageBox::information(this,"Game ended","Perdes-te!\n");
+    return;
+  }
+  turn = 2;
+>>>>>>> semaforo mcts
 }
 
 std::array< std::array<char, 4>, 3> Semaforo::getBoard(){
