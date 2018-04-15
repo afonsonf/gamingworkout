@@ -32,6 +32,7 @@ private:
     int game_end;
     int game_start;
     int first_player;
+    int dif;
 
     int brancaI;
     int brancaJ;

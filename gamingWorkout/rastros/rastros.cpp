@@ -15,6 +15,7 @@ rastros::rastros(QWidget *parent,QPushButton *b) :
     max_depth =14;
     init_win();
     init();
+    dif = 0;
 }
 
 void rastros::init_win()

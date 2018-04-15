@@ -55,7 +55,6 @@ SOURCES       = ../gamingWorkout/main.cpp \
 		../gamingWorkout/semaforo/semaforo.cpp \
 		../gamingWorkout/rastros/rastros.cpp \
 		../gamingWorkout/caesGatos/caesgatos.cpp \
-		../gamingWorkout/avanco/avanco.cpp \
 		../gamingWorkout/Produto/produto.cpp qrc_semaforo.cpp \
 		qrc_rastros.cpp \
 		qrc_caesgatos.cpp \
@@ -69,7 +68,6 @@ OBJECTS       = main.o \
 		semaforo.o \
 		rastros.o \
 		caesgatos.o \
-		avanco.o \
 		produto.o \
 		qrc_semaforo.o \
 		qrc_rastros.o \
@@ -243,13 +241,11 @@ DIST          = ../../../../Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
 		../gamingWorkout/semaforo/semaforo.h \
 		../gamingWorkout/rastros/rastros.h \
 		../gamingWorkout/caesGatos/caesgatos.h \
-		../gamingWorkout/avanco/avanco.h \
 		../gamingWorkout/Produto/produto.h ../gamingWorkout/main.cpp \
 		../gamingWorkout/mainwindow.cpp \
 		../gamingWorkout/semaforo/semaforo.cpp \
 		../gamingWorkout/rastros/rastros.cpp \
 		../gamingWorkout/caesGatos/caesgatos.cpp \
-		../gamingWorkout/avanco/avanco.cpp \
 		../gamingWorkout/Produto/produto.cpp
 QMAKE_TARGET  = gamingWorkout
 DESTDIR       = 
@@ -259,7 +255,7 @@ TARGET        = gamingWorkout
 first: all
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h ui_semaforo.h ui_rastros.h ui_caesgatos.h ui_avanco.h ui_produto.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_semaforo.h ui_rastros.h ui_caesgatos.h ui_produto.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../gamingWorkout/gamingWorkout.pro ../../../../Qt/5.10.1/gcc_64/mkspecs/linux-g++/qmake.conf ../../../../Qt/5.10.1/gcc_64/mkspecs/features/spec_pre.prf \
@@ -613,9 +609,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../gamingWorkout/semaforo/semaforo.qrc ../gamingWorkout/rastros/rastros.qrc ../gamingWorkout/caesGatos/caesgatos.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../Qt/5.10.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../gamingWorkout/mainwindow.h ../gamingWorkout/semaforo/semaforo.h ../gamingWorkout/rastros/rastros.h ../gamingWorkout/caesGatos/caesgatos.h ../gamingWorkout/avanco/avanco.h ../gamingWorkout/Produto/produto.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../gamingWorkout/main.cpp ../gamingWorkout/mainwindow.cpp ../gamingWorkout/semaforo/semaforo.cpp ../gamingWorkout/rastros/rastros.cpp ../gamingWorkout/caesGatos/caesgatos.cpp ../gamingWorkout/avanco/avanco.cpp ../gamingWorkout/Produto/produto.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../gamingWorkout/mainwindow.ui ../gamingWorkout/semaforo/semaforo.ui ../gamingWorkout/rastros/rastros.ui ../gamingWorkout/caesGatos/caesgatos.ui ../gamingWorkout/avanco/avanco.ui ../gamingWorkout/Produto/produto.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../gamingWorkout/mainwindow.h ../gamingWorkout/semaforo/semaforo.h ../gamingWorkout/rastros/rastros.h ../gamingWorkout/caesGatos/caesgatos.h ../gamingWorkout/Produto/produto.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../gamingWorkout/main.cpp ../gamingWorkout/mainwindow.cpp ../gamingWorkout/semaforo/semaforo.cpp ../gamingWorkout/rastros/rastros.cpp ../gamingWorkout/caesGatos/caesgatos.cpp ../gamingWorkout/Produto/produto.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../gamingWorkout/mainwindow.ui ../gamingWorkout/semaforo/semaforo.ui ../gamingWorkout/rastros/rastros.ui ../gamingWorkout/caesGatos/caesgatos.ui ../gamingWorkout/Produto/produto.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -1237,9 +1233,9 @@ compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_semaforo.h ui_rastros.h ui_caesgatos.h ui_avanco.h ui_produto.h
+compiler_uic_make_all: ui_mainwindow.h ui_semaforo.h ui_rastros.h ui_caesgatos.h ui_produto.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_semaforo.h ui_rastros.h ui_caesgatos.h ui_avanco.h ui_produto.h
+	-$(DEL_FILE) ui_mainwindow.h ui_semaforo.h ui_rastros.h ui_caesgatos.h ui_produto.h
 ui_mainwindow.h: ../gamingWorkout/mainwindow.ui \
 		../../../../Qt/5.10.1/gcc_64/bin/uic
 	/home/fredyr4zox/Qt/5.10.1/gcc_64/bin/uic ../gamingWorkout/mainwindow.ui -o ui_mainwindow.h
@@ -1255,10 +1251,6 @@ ui_rastros.h: ../gamingWorkout/rastros/rastros.ui \
 ui_caesgatos.h: ../gamingWorkout/caesGatos/caesgatos.ui \
 		../../../../Qt/5.10.1/gcc_64/bin/uic
 	/home/fredyr4zox/Qt/5.10.1/gcc_64/bin/uic ../gamingWorkout/caesGatos/caesgatos.ui -o ui_caesgatos.h
-
-ui_avanco.h: ../gamingWorkout/avanco/avanco.ui \
-		../../../../Qt/5.10.1/gcc_64/bin/uic
-	/home/fredyr4zox/Qt/5.10.1/gcc_64/bin/uic ../gamingWorkout/avanco/avanco.ui -o ui_avanco.h
 
 ui_produto.h: ../gamingWorkout/Produto/produto.ui \
 		../../../../Qt/5.10.1/gcc_64/bin/uic
@@ -2041,9 +2033,6 @@ caesgatos.o: ../gamingWorkout/caesGatos/caesgatos.cpp ../gamingWorkout/caesGatos
 		../../../../Qt/5.10.1/gcc_64/include/QtWidgets/qdialog.h \
 		../../../../Qt/5.10.1/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o caesgatos.o ../gamingWorkout/caesGatos/caesgatos.cpp
-
-avanco.o: ../gamingWorkout/avanco/avanco.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o avanco.o ../gamingWorkout/avanco/avanco.cpp
 
 produto.o: ../gamingWorkout/Produto/produto.cpp ../gamingWorkout/Produto/produto.h \
 		../../../../Qt/5.10.1/gcc_64/include/QtWidgets/QWidget \

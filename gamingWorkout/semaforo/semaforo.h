@@ -34,16 +34,13 @@ public:
     void playHuman(int moveY, int moveX);
     std::pair<int, int> playBot();
     std::pair<int,int> chooseMove();
-    void updateBoard(std::array< std::array<char,4>, 3> board,int moveY, int moveX);
+    void updateBoard(std::array< std::array<char,4>, 3> &board,int moveY, int moveX);
     bool end(std::array< std::array<char,4>, 3> b);
     double eval(node5 *t, int tot);
     node5* select(node5 *t);
     std::vector <std::array< std::array<char,4>, 3> > descend(std::array< std::array<char,4>, 3> atu);
-    std::array< std::array<char,4>, 3> play(std::array< std::array<char,4>, 3> t, std::pair<int,int> move);
-    int simul(std::array< std::array<char,4>, 3> tabi, int player);
-    void update(node5 *t, int res);
-    void MC(node5 *t);
-    int bestChoice(node5 *t);
+    void play(std::array< std::array<char,4>, 3> &t, std::pair<int,int> move);
+    int simul(std::array< std::array<char,4>, 3> b, int player);
 
 private slots:
     void on_pushButton_clicked();
