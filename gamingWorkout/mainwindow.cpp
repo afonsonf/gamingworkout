@@ -3,6 +3,7 @@
 #include "semaforo/semaforo.h"
 #include "rastros/rastros.h"
 #include "caesGatos/caesgatos.h"
+#include "Produto/produto.h"
 
 #include <QPushButton>
 #include <QTextEdit>
@@ -26,6 +27,8 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::begin_win(){
+    QFrame* line;
+
     //semaforo
     {
         QPixmap pixmap(":/img/img/semaforo.png");
@@ -50,6 +53,11 @@ void MainWindow::begin_win(){
             show_s();
          });
     }
+    line = new QFrame;
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+    ui->games_l->addWidget(line);
+
     //rastros
     {
         QPixmap pixmap(":/img/img/rastros.jpg");
@@ -74,6 +82,11 @@ void MainWindow::begin_win(){
             show_r();
          });
     }
+    line = new QFrame;
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+    ui->games_l->addWidget(line);
+
     //caes gatos
     {
         QPixmap pixmap(":/img/img/caesgatos.jpeg");
@@ -96,6 +109,35 @@ void MainWindow::begin_win(){
         ui->games_l->addWidget(wh);
         connect(b,&QPushButton::clicked, [=]() {
             show_cG();
+         });
+    }
+    line = new QFrame;
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+    ui->games_l->addWidget(line);
+
+    //produto
+    {
+        QPixmap pixmap(":/img/img/produto.jpg");
+        QLabel *img = new QLabel;
+        img->setPixmap(pixmap.scaled(200,200,Qt::IgnoreAspectRatio, Qt::FastTransformation));
+        img->setFixedHeight(200);
+        img->setFixedWidth(200);
+        QPushButton *b = new QPushButton("play");
+        QLabel *t = new QLabel("jogo produto");
+        QWidget *wv = new QWidget;
+        QWidget *wh = new QWidget;
+        QHBoxLayout *hl = new QHBoxLayout;
+        QVBoxLayout *vl = new QVBoxLayout;
+        vl->addWidget(t);
+        vl->addWidget(b);
+        wv->setLayout(vl);
+        hl->addWidget(img);
+        hl->addWidget(wv);
+        wh->setLayout(hl);
+        ui->games_l->addWidget(wh);
+        connect(b,&QPushButton::clicked, [=]() {
+            show_p();
          });
     }
     ui->back->setHidden(true);
@@ -123,6 +165,16 @@ void MainWindow::show_r(){
 
 void MainWindow::show_cG(){
     CaesGatos *s = new CaesGatos(this,ui->back);
+    //s->show();
+    if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
+    ui->stackedWidget->addWidget(s);
+    ui->stackedWidget->setCurrentIndex(1);
+    ui->back->setHidden(true);
+    //ui->game->;
+}
+
+void MainWindow::show_p(){
+    produto *s = new produto(this,ui->back);
     //s->show();
     if(ui->stackedWidget->count()>1)ui->stackedWidget->removeWidget(ui->stackedWidget->widget(1));
     ui->stackedWidget->addWidget(s);

@@ -55,4 +55,5 @@ FORMS += \
 RESOURCES += \
     	semaforo/semaforo.qrc \
     rastros/rastros.qrc \
-    caesGatos/caesgatos.qrc
+    caesGatos/caesgatos.qrc \
+    Produto/produto.qrc

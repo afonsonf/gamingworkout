@@ -165,7 +165,7 @@ bool rastros::valid_move(int i, int j)
         std::cout << "\n";
     }*/
 
-    return board[i][j] == 0 && ki<=1 && kj<=1;
+    return board[i][j] == 0 && ki<=1 && kj<=1 && !(i!=brancaI && j!=brancaJ);
 }
 
 std::vector<std::pair<int, int> > rastros::possible_moves(int ix,int jx)

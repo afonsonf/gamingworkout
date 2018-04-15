@@ -24,6 +24,8 @@ private:
     void show_s();
     void show_r();
     void show_cG();
+    void show_p();
+
 };
 
 #endif // MAINWINDOW_H
