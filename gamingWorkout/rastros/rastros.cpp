@@ -12,7 +12,6 @@ rastros::rastros(QWidget *parent,QPushButton *b) :
 {
     ui->setupUi(this);
     back = b;
-    max_depth =14;
     init_win();
     init();
     dif = 0;
@@ -82,20 +81,20 @@ void rastros::but_click(int i,int j)
         game_end = 1;
         if(first_player==0){
             if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost!\n");
             else
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             return;
         }
         else{
             if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost!\n");
             else
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             return;
         }
     }
@@ -118,20 +117,20 @@ void rastros::but_click(int i,int j)
         game_end = 1;
         if(first_player==0){
             if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost!\n");
             return;
         }
         else{
             if(brancaI==pfinal[1][0] && brancaJ==pfinal[1][1])
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else if(brancaI==pfinal[0][0] && brancaJ==pfinal[0][1])
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost!\n");
             return;
         }
     }
@@ -264,8 +263,19 @@ void rastros::playBot()
 
 void rastros::AlphaBeta ()
 {
-    if(nturn<2) max_depth = 10;
-    else max_depth = 13;
+    switch(dif){
+        case 0:
+            max_depth = 4;
+            break;
+        case 1:
+            max_depth = 8;
+            break;
+        case 2:
+            if(nturn<2) max_depth = 10;
+            else max_depth = 13;
+            break;
+    }
+
     int alpha = INT_MIN;
     int beta =INT_MAX;
     int depth = 0;
@@ -475,5 +485,18 @@ void rastros::on_comboBox_2_currentTextChanged(const QString &arg1)
         }
         turn = 0;
         game_start=0;
+    }
+}
+
+void rastros::on_comboBox_currentTextChanged(const QString &arg1)
+{
+    if(arg1 == "easy"){
+       dif = 0;
+    }
+    else if(arg1 == "medium"){
+        dif = 1;
+    }
+    else{
+        dif = 2;
     }
 }

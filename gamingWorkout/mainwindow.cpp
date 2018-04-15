@@ -100,7 +100,7 @@ void MainWindow::begin_win(){
         img->setFixedHeight(200);
         img->setFixedWidth(200);
         QPushButton *b = new QPushButton("play");
-        QLabel *t = new QLabel("jogo Caes e Gatos");
+        QLabel *t = new QLabel("\"Caes e Gatos\" Game");
         QWidget *wv = new QWidget;
         QWidget *wh = new QWidget;
         QHBoxLayout *hl = new QHBoxLayout;
@@ -130,7 +130,7 @@ void MainWindow::begin_win(){
         img->setFixedHeight(200);
         img->setFixedWidth(200);
         QPushButton *b = new QPushButton("play");
-        QLabel *t = new QLabel("jogo produto");
+        QLabel *t = new QLabel("\"Produto\" Game");
         QWidget *wv = new QWidget;
         QWidget *wh = new QWidget;
         QHBoxLayout *hl = new QHBoxLayout;
