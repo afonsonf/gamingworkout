@@ -5,18 +5,22 @@
 #include <vector>
 #include <utility>
 #include <time.h>
+#include <cmath>
 
 #include <QDebug>
 #include <QMessageBox>
 
-typedef struct node<T>{
-  T tab;
+using namespace std;
+
+class Semaforo::node5{
+public:
+  std::array< std::array<char,4>, 3> tab;
   int player; //1pc , 2jog
   int win;
   int tot;
-  node<T> *parent;
-  vector < node<T>* > child;
-  node(T t, node<T> *p, int pl)
+  node5 *parent;
+  vector < node5* > child;
+  node5(std::array< std::array<char,4>, 3> t, node5 *p, int pl)
   {
     tab=t;
     player=pl;
@@ -24,9 +28,9 @@ typedef struct node<T>{
     tot=0;
     parent=p;
   }
-} node<T>;
+};
 
-void clean(node<T> *a,int b)
+void clean(Semaforo::node5* a,int b)
 {
   if(a!=NULL)
     {
@@ -38,7 +42,9 @@ void clean(node<T> *a,int b)
   return;
 }
 
-node < std::Array< std::Array<char,4>, 3> > T;
+
+
+
 
 Semaforo::Semaforo(QWidget *parent,QPushButton *b) :
   QWidget(parent),
@@ -87,8 +93,8 @@ void Semaforo::initGame() {
 
 void Semaforo::but_click(int i,int j)
 {
-<<<<<<< HEAD
   //qDebug() << turn << " " << i << " " << j << ;
+
   if(turn!=2 || game_end || (game_start && first_player == 1)) return;
   if(game_start)game_start =0;
   if(!validMove(i,j)) return;
@@ -110,7 +116,7 @@ void Semaforo::but_click(int i,int j)
     break;
   }
   }
-  if(checkGameOver()){
+  if(end(board)){
     game_end = 1;
     QMessageBox::information(this,"Game ended","Ganhas-te!\n");
     return;
@@ -132,70 +138,12 @@ void Semaforo::but_click(int i,int j)
     break;
   }
   }
-  if(checkGameOver()){
+  if(end(board)){
     game_end = 1;
     QMessageBox::information(this,"Game ended","Perdes-te!\n");
     return;
   }
   turn = 2;
-=======
-    //qDebug() << turn << " " << i << " " << j << ;
-    if(turn!=2 || game_end || (game_start && first_player == 1)) return;
-    if(game_start)game_start =0;
-    if(!validMove(i,j)){
-        ui->mensagem->setText("Invalid move");
-        return;
-    }
-    ui->mensagem->setText("");
-    //play human
-    playHuman(i,j);
-    lastMoveX=j;
-    lastMoveY=i;
-    switch(board[lastMoveY][lastMoveX]){
-        case 'g':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
-            break;
-        }
-        case 'y':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
-            break;
-        }
-        case 'r':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
-            break;
-        }
-    }
-    if(checkGameOver()){
-        game_end = 1;
-        QMessageBox::information(this,"Game ended","Ganhas-te!\n");
-        return;
-    }
-    //play bot
-    turn = 1;
-    ui->mensagem->setText("thinking");
-    playBot();
-    ui->mensagem->setText("");
-    switch(board[lastMoveY][lastMoveX]){
-        case 'g':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: green");
-            break;
-        }
-        case 'y':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: yellow");
-            break;
-        }
-        case 'r':{
-            m[lastMoveY][lastMoveX]->setStyleSheet("background-color: red");
-            break;
-        }
-    }
-    if(checkGameOver()){
-        game_end = 1;
-        QMessageBox::information(this,"Game ended","Perdes-te!\n");
-        return;
-    }
-    turn = 2;
->>>>>>> badf7e0447a3e5f0bd4933f9cd47824699974a4e
 }
 
 std::array< std::array<char, 4>, 3> Semaforo::getBoard(){
@@ -259,24 +207,32 @@ std::pair<int, int> Semaforo::playBot(){
   return move;
 }
 
-std::pair<int, int> Semaforo::chooseMove(){
-  if(T==NULL)
-    T = new node(board,NULL);
+pair<int, int> Semaforo::chooseMove(){
+  if(no5==NULL)
+    no5 = new node5(board,NULL,1);
   int nos = 0;
   while(nos<1000)
     {
-      MC(T);
+      MC(no5);
       nos++;
     }
-  pair<int,int> move = bestChoice(T);
-  node *t=T;
-  T = T->child[jog];
-  T->parent=NULL;
+  int jog = bestChoice(no5);
+  node5 *t=no5;
+  no5 = no5->child[jog];
+  no5->parent=NULL; //no5 novo , t velho
+  std::pair<int,int> papafonso;
+  for(int i=0;i<3;i++)
+      for(int j=0;j<4;j++)
+          if(no5->tab[i][j] != t->tab[i][j])
+          {
+              papafonso = std::make_pair(i,j);
+              i=5;j=10;
+          }
   clean(t,jog);
-  return move;
+  return papafonso;
 }
 
-void Semaforo::updateBoard(std::Array< std::Array<char,4>, 3> > b, int moveY, int moveX){
+void Semaforo::updateBoard(std::array< std::array<char,4>, 3> b, int moveY, int moveX){
   if(b[moveY][moveX] == 'w')
     b[moveY][moveX] = 'g';
   else if(b[moveY][moveX] == 'g')
@@ -285,7 +241,7 @@ void Semaforo::updateBoard(std::Array< std::Array<char,4>, 3> > b, int moveY, in
     b[moveY][moveX] = 'r';
 }
 
-bool Semaforo::end(std::Array< std::Array<char,4>, 3> b){
+bool Semaforo::end(std::array< std::array<char,4>, 3> b){
   //horizontal
   for(int i=0;i<3;i++)
     for(int j=0;j<2;j++)
@@ -356,7 +312,7 @@ void Semaforo::on_comboBox_2_currentIndexChanged(const QString &arg1)
       break;
     }
     }
-    if(checkGameOver()){
+    if(end(board)){
       game_end = 1;
       QMessageBox::information(this,"Game ended","Perdes-te!\n");
       return;
@@ -393,7 +349,7 @@ void Semaforo::on_pushButton_2_clicked()
       break;
     }
     }
-    if(checkGameOver()){
+    if(end(board)){
       game_end = 1;
       QMessageBox::information(this,"Game ended","Perdes-te!\n");
       return;
@@ -404,18 +360,17 @@ void Semaforo::on_pushButton_2_clicked()
   else turn=2;
 }
 
-double eval(node *t,int tot)
+double eval(Semaforo::node5 *t,int tot)
 {
   if(t==NULL)
-    return 0.5 + EXPLOR_PARAM*sqrt(log(tot+1));
+    return 0.5 + sqrt(2*log(tot+1));
 
   double wr = t->win/((double)t->tot+1);
-  if(!((t->tab)>>52))
-    wr = 1.0 - wr;
-  return wr + EXPLOR_PARAM*sqrt(log(tot+1)/((double)t->tot+1));
+
+  return wr + sqrt(2*log(tot+1)/((double)t->tot+1));
 }
 
-node* select(node *t)
+Semaforo::node5* select(Semaforo::node5 *t)
 {
   if(end(t->tab))
     return t;
@@ -435,38 +390,62 @@ node* select(node *t)
 	best.push_back(i);
     }
   int pick = best[rand()%(int)best.size()];
-  if(t->child[pick]==NULL)
+  if(score<(0.5 + sqrt(2*log(t->tot+1)))*100000 && (t->child.size())<(Semaforo::descend(t->tab).size()))
     {
-      t->child[pick] = new node(place(t->tab,pick),t);
-      return t->child[pick];
+      Semaforo::node5 *filho = new Semaforo::node5(Semaforo::play(t->tab,t,t->player%2+1);
+      std::vector<std::array< std::array<char,4>, 3> > des = descend(t->tab);
+      for(int p=0;p<(int)des.size();p++)
+      {
+          std::array< std::array<char,4>, 3> d = des[p];
+          int c;
+          for(c=0;i<(int)t->child.size();c++)
+              if(d==t->child[i]->tab)
+                  break;
+          if(c==(int)t->child.size())
+          {
+
+          }
+      }
+      t->child.push_back(filho);
+      return ;
     }
   return select(t->child[pick]);
 }
 
-std::Array< std::Array<char,4>, 3> > play (std::Array< std::Array<char,4>, 3> > t,int p, pair<int,int> move)
+std::vector <std::array< std::array<char,4>, 3> > descend(std::array< std::array<char,4>, 3> atu)
 {
-  std::Array< std::Array<char,4>, 3> > newBoard;
+    std::vector <std::array< std::array<char,4>, 3> > v;
+    for(int i=0;i<3;i++)
+        for(int j=0;j<4;j++)
+            if(atu[i][j]!='r')
+                v.push_back(play(atu,std::make_pair(i,j)));
+    return v;
+}
+
+std::array< std::array<char,4>, 3> play (std::array< std::array<char,4>, 3> t, pair<int,int> move)
+{
+  std::array< std::array<char,4>, 3> newBoard;
   for(int i=0;i<3;i++)
     for(int j=0;j<4;j++)
       newBoard[i][j] = t[i][j];
-  updateBoard(newBoard,move.first, move.second);
+  Semaforo::updateBoard(newBoard, move.first, move.second);
   return newBoard;
 }
 
 
-int simul(T tabi, int player)
+int simul(std::array< std::array<char,4>, 3> tabi, int player)
 {
   bool a = end(tabi);
   if(a)
     return a;
   
-  vector <pair<int,int> > poss = possibleMoves(player);
+  vector <pair<int,int> > poss = possibleMoves();
   pair<int,int> pick = poss[rand()%(int)poss.size()];
   
   return simul(play(tabi,player,pick),(player%2)+1);
 }
 
-void update(node *t, int res)
+void update(Semaforo::node5 *t, int res)
 {
   if(t==NULL)
     return;
@@ -478,16 +457,16 @@ void update(node *t, int res)
   return update(t->parent,res);
 }
 
-void MC(node<T> *t)
+void MC(Semaforo::node5 *t)
 {
-  node<T> *next = select(t);
+  Semaforo::node5 *next = select(t);
   int res = simul(next->tab,next->player);
   update(next,res);
 }
 
-int bestChoice(node<T> *t)
+int bestChoice(Semaforo::node5 *t)
 {
-  pair<int,int> bMove;
+  int bMove;
   int score = -10000;
   int tryi;
   for(int i=0;i<(int)t->child.size();i++)
