@@ -13,6 +13,9 @@ class Semaforo : public QWidget
     Q_OBJECT
 
 public:
+    class node5;
+    node5 *no5;
+
     explicit Semaforo(QWidget *parent = 0,QPushButton *back = 0);
     ~Semaforo();
 
@@ -30,9 +33,17 @@ public:
     std::vector< std::pair<int, int> > possibleMoves();
     void playHuman(int moveY, int moveX);
     std::pair<int, int> playBot();
-    std::pair<int, int> chooseMove();
-    void updateBoard(int moveY, int moveX);
-    bool checkGameOver();
+    std::pair<int,int> chooseMove();
+    void updateBoard(std::array< std::array<char,4>, 3> board,int moveY, int moveX);
+    bool end(std::array< std::array<char,4>, 3> b);
+    double eval(node5 *t, int tot);
+    node5* select(node5 *t);
+    std::vector <std::array< std::array<char,4>, 3> > descend(std::array< std::array<char,4>, 3> atu);
+    std::array< std::array<char,4>, 3> play(std::array< std::array<char,4>, 3> t, std::pair<int,int> move);
+    int simul(std::array< std::array<char,4>, 3> tabi, int player);
+    void update(node5 *t, int res);
+    void MC(node5 *t);
+    int bestChoice(node5 *t);
 
 private slots:
     void on_pushButton_clicked();

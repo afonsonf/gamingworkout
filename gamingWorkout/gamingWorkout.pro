@@ -24,9 +24,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-        #semaforo/semaforo.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    semaforo/semaforo.cpp \
     rastros/rastros.cpp \
     caesGatos/caesgatos.cpp \
     avanco/avanco.cpp \
@@ -35,7 +35,7 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-        #semaforo/semaforo.h \
+        semaforo/semaforo.h \
     rastros/rastros.h \
     caesGatos/caesgatos.h \
     avanco/avanco.h \
@@ -43,8 +43,8 @@ HEADERS += \
     #avanco/avanco.h
 
 FORMS += \
-        mainwindow.ui \
-        #semaforo/semaforo.ui \
+    mainwindow.ui \
+    semaforo/semaforo.ui \
     rastros/rastros.ui \
     caesGatos/caesgatos.ui \
     avanco/avanco.ui \
@@ -53,7 +53,7 @@ FORMS += \
 
 
 RESOURCES += \
-    	semaforo/semaforo.qrc \
+    semaforo/semaforo.qrc \
     rastros/rastros.qrc \
     caesGatos/caesgatos.qrc \
     Produto/produto.qrc
