@@ -40,7 +40,7 @@ void MainWindow::begin_win(){
         img->setFixedHeight(200);
         img->setFixedWidth(200);
         QPushButton *b = new QPushButton("play");
-        QLabel *t = new QLabel("jogo semaforo");
+        QLabel *t = new QLabel("\"Semaforo\" Game");
         QWidget *wv = new QWidget;
         QWidget *wh = new QWidget;
         QHBoxLayout *hl = new QHBoxLayout;
@@ -70,7 +70,7 @@ void MainWindow::begin_win(){
         img->setFixedHeight(200);
         img->setFixedWidth(200);
         QPushButton *b = new QPushButton("play");
-        QLabel *t = new QLabel("jogo Rastros");
+        QLabel *t = new QLabel("\"Rastros\" Game");
         QWidget *wv = new QWidget;
         QWidget *wh = new QWidget;
         QHBoxLayout *hl = new QHBoxLayout;

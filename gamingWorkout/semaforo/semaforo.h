@@ -51,10 +51,13 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_comboBox_currentTextChanged(const QString &arg1);
+
 private:
     Ui::Semaforo *ui;
 
     std::array< std::array<char, 4>, 3> board;
+    int dif;
     int turn; //1=human, 2=computer
     int lastMoveX;
     int lastMoveY;

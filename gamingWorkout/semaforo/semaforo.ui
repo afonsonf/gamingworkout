@@ -108,11 +108,6 @@
          <string>hard</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>random</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>

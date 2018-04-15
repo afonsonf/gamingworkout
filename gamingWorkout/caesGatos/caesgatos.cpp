@@ -13,6 +13,7 @@ CaesGatos::CaesGatos(QWidget *parent,QPushButton *b) :
     init_win();
     initGame();
     depthmax = 3;
+    dif = 0;
 }
 
 
@@ -58,6 +59,7 @@ void CaesGatos::but_click(int i,int j)
         ui->mensagem->setText("invalid move");
         return;
     }
+    nturn++;
     ui->mensagem->setText("");
     if(game_start)game_start =0;
 
@@ -80,8 +82,11 @@ void CaesGatos::but_click(int i,int j)
 
     if(end()){
         game_end = 1;
-        if(possMoves(1).size()==0) QMessageBox::information(this,"Game ended","Ganhas-te!\n");
-        else QMessageBox::information(this,"Game ended","Perdes-te!\n");
+        if(possMoves(1).size()==0) QMessageBox::information(this,"Game ended","You won!\n");
+        else{
+            QMessageBox::information(this,"Game ended","You lost!\n");
+            ui->mensagem->setText(("Last Game win pos: row "+QString::number(7-possMoves(1)[0]/10)+", col "+QString::number(possMoves(1)[0]%10)));
+        }
         return;
     }
 /*
@@ -93,6 +98,7 @@ void CaesGatos::but_click(int i,int j)
     //play bot
     turn = 1;
     ui->mensagem->setText("thinking");
+    QCoreApplication::processEvents();
     int move = playBot();
     ui->mensagem->setText("");
     std::vector<int> vv = possMoves(1);
@@ -117,8 +123,11 @@ void CaesGatos::but_click(int i,int j)
 
     if(end()){
         game_end = 1;
-        if(possMoves(1).size()==0) QMessageBox::information(this,"Game ended","Ganhas-te!\n");
-        else QMessageBox::information(this,"Game ended","Perdes-te!\n");
+        if(possMoves(1).size()==0) QMessageBox::information(this,"Game ended","You won!\n");
+        else{
+            ui->mensagem->setText(("Last Game win pos: row "+QString::number(7-move/10)+", col "+QString::number(move%10)));
+            QMessageBox::information(this,"Game ended","You lost!\n");
+        }
         return;
     }
     turn = 0;
@@ -130,6 +139,20 @@ void CaesGatos::on_sair_clicked()
 }
 
 int CaesGatos::alphabetaDecision(int maxDistanceDepth){
+    if(nturn<2) depthmax = 2;
+    else {
+        switch(dif){
+            case 0:
+                depthmax = 1;
+                break;
+            case 1:
+                depthmax = 2;
+                break;
+            case 2:
+                depthmax = 4;
+            break;
+        }
+    }
     int alpha = std::numeric_limits<int>::min(), beta = std::numeric_limits<int>::max();
     ABmaxValue(maxDistanceDepth,alpha,beta);
 
@@ -197,7 +220,7 @@ void CaesGatos::initGame()
 {
   for(int i=0;i<100;i++)
       board[i] = 0;
-
+  nturn = 0;
   game_start=1;
 }
 
@@ -386,4 +409,11 @@ void CaesGatos::on_comboBox_currentIndexChanged(const QString &arg1)
         turn = 0;
         game_start=0;
     }
+}
+
+void CaesGatos::on_comboBox_2_currentIndexChanged(const QString &arg1)
+{
+    if(arg1 == "easy") dif = 0;
+    else if (arg1 == "medium") dif = 1;
+    else dif = 2;
 }

@@ -25,6 +25,8 @@ private slots:
 
     void on_comboBox_currentIndexChanged(const QString &arg1);
 
+    void on_comboBox_2_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::CaesGatos *ui;
     QPushButton *back;
@@ -32,6 +34,7 @@ private:
     void init_win();
     void but_click(int i, int j);
 
+    int nturn;
     int game_end;
     int game_start;
     int first_player;
@@ -39,6 +42,7 @@ private:
     int board[100]; // 10*coluna + linha
     int bestMove;
     int depthmax;
+    int dif;
 
     bool end();
     std::vector<int> possMoves(int player);

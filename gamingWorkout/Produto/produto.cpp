@@ -74,9 +74,9 @@ void produto::click(int i, int j)
         game_end=1;
         //show message
         if(result()==1)
-            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            QMessageBox::information(this,"Game ended","You won!\n");
         else
-            QMessageBox::information(this,"Game ended","Perdes-te!\n");
+            QMessageBox::information(this,"Game ended","You lost...\n");
         return;
     }
 
@@ -90,9 +90,9 @@ void produto::click(int i, int j)
             game_end=1;
             //show message
             if(result()==1)
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost...\n");
 
             return;
         }
@@ -106,9 +106,9 @@ void produto::click(int i, int j)
             game_end=1;
             //show message
             if(result()==1)
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost...\n");
 
             return;
         }
@@ -122,9 +122,9 @@ void produto::click(int i, int j)
             game_end=1;
             //show message
             if(result()==1)
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost...\n");
 
             return;
         }
@@ -138,9 +138,9 @@ void produto::click(int i, int j)
             game_end=1;
             //show message
             if(result()==1)
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost...\n");
 
             return;
         }
@@ -154,9 +154,9 @@ void produto::click(int i, int j)
             game_end=1;
             //show message
             if(result()==1)
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost...\n");
 
             return;
         }
@@ -171,9 +171,9 @@ void produto::click(int i, int j)
             game_end=1;
             //show message
             if(result()==1)
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost...\n");
 
             return;
         }
@@ -339,9 +339,9 @@ void produto::on_comboBox_2_currentIndexChanged(const QString &arg1)
             game_end=1;
             //show message
             if(result()==1)
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost...\n");
 
             return;
         }
@@ -372,9 +372,9 @@ void produto::on_pushButton_2_clicked()
             game_end=1;
             //show message
             if(result()==1)
-                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+                QMessageBox::information(this,"Game ended","You won!\n");
             else
-                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+                QMessageBox::information(this,"Game ended","You lost...\n");
 
             return;
         }

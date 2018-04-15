@@ -95,21 +95,6 @@
       <widget class="QComboBox" name="comboBox">
        <item>
         <property name="text">
-         <string>easy</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>medium</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>hard</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>random</string>
         </property>
        </item>

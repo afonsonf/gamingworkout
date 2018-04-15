@@ -18,6 +18,7 @@ Semaforo::Semaforo(QWidget *parent,QPushButton *b) :
     init_win();
     initGame();
     back = b;
+    dif = 0;
 }
 
 Semaforo::~Semaforo()
@@ -87,7 +88,7 @@ void Semaforo::but_click(int i,int j)
 
     if(end(board)){
         game_end = 1;
-        QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+        QMessageBox::information(this,"Game ended","You won!\n");
         return;
     }
     //play bot
@@ -114,7 +115,7 @@ void Semaforo::but_click(int i,int j)
 
     if(end(board)){
         game_end = 1;
-        QMessageBox::information(this,"Game ended","Perdes-te!\n");
+        QMessageBox::information(this,"Game ended","You lost!\n");
         return;
     }
     turn = 2;
@@ -235,7 +236,22 @@ std::pair<int, int> Semaforo::chooseMove(){
     int score[n+10];
     for(int i=0;i<n;i++)
         score[i]=0;
-    int NUM_JOGOS=10000;
+
+
+    int NUM_JOGOS;
+    switch(dif){
+        case 0:
+            NUM_JOGOS = 1000;
+            break;
+        case 1:
+            NUM_JOGOS = 4000;
+            break;
+        case 2:
+            NUM_JOGOS = 8000;
+            break;
+    }
+
+
     for(int g=0;g<NUM_JOGOS;g++)
       {
     for(int vi=0;vi<n;vi++)
@@ -394,4 +410,17 @@ void Semaforo::on_pushButton_2_clicked()
         game_start=0;
     }
     else turn=2;
+}
+
+void Semaforo::on_comboBox_currentTextChanged(const QString &arg1)
+{
+    if(arg1 == "easy"){
+        dif = 0;
+    }
+    else if(arg1 == "medium"){
+        dif = 1;
+    }
+    else{
+        dif = 2;
+    }
 }

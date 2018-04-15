@@ -55,7 +55,7 @@ void rastros::init_win()
 
 void rastros::but_click(int i,int j)
 {
-    nturn++;
+
     qDebug()<<0;
     if(turn!=0 || game_end || (game_start && first_player == 1)) return;
     if(game_start)game_start =0;
@@ -64,6 +64,7 @@ void rastros::but_click(int i,int j)
         ui->mensagem->setText("invalid move");
         return;
     }
+    nturn++;
     ui->mensagem->setText("");
     qDebug()<<2;
     //play human
