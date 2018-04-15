@@ -189,6 +189,7 @@ void playHuman(int Xnow, int Ynow,int moveX, int moveY) {
 
 void playBot() {
 	AlphaBeta();
+	printf ("here2\n");
 	updateBoard(ant_best_play[0],ant_best_play[1],best_play[0],best_play[1]);
 }
 
@@ -250,6 +251,7 @@ void AlphaBeta ()
     int alpha = INT_MIN;
     int beta =INT_MAX;
     int depth = 0;
+    printf ("entrou2\n");
     if (turn == 0)
         min_value(alpha,beta,depth);
     else
@@ -259,10 +261,12 @@ void AlphaBeta ()
 
 int min_value(int alpha, int beta, int depth) 
 {   
-    if (checkGameOver() || depth>=max_depth) {
+	printf ("min: a=%d b=%d d=%d\n", alpha,beta,depth);
+    if (checkGameOver()!=-1 || depth>=max_depth) {
         return heuristica();
     }
 
+    printf ("passa\n");
     int val = INT_MAX, u;
 
     possibleMoves();
@@ -283,9 +287,10 @@ int min_value(int alpha, int beta, int depth)
 
 	        vlant = board [ni][nj];
 
-	        board[ni][nj] = 2;
+	        updateBoard (li,lj,ni,nj);
 
 	        u = max_value(alpha,beta,depth);
+	        printf ("min = %d\n",u);
 
 	        if (val > u) {
 	            if (depth==1){
@@ -307,6 +312,7 @@ int min_value(int alpha, int beta, int depth)
 	    }
 	}
 	else {
+		printf("eu estu aquiiiiii\n");
 	    for (int i = 0; i < (int) movesw.size(); i++){
 	        depth++;
 	        ni = movesw[i].first;
@@ -317,9 +323,10 @@ int min_value(int alpha, int beta, int depth)
 
 	        vlant = board [ni][nj];
 
-	        board[ni][nj] = 1;
+	        updateBoard (li,lj,ni,nj);
 
 	        u = max_value(alpha,beta,depth);
+	        printf ("min = %d\n",u);
 
 	        if (val > u) {
 	            if (depth==1){
@@ -346,12 +353,14 @@ int min_value(int alpha, int beta, int depth)
 
 int max_value(int alpha, int beta, int depth)
 {  
-    
-    if (checkGameOver() || depth>=max_depth) {
+	printf ("max: a=%d b=%d d=%d\n", alpha,beta,depth);
+    if (checkGameOver()!=-1 || depth>=max_depth) {
         return heuristica();
     }
 
-    int val = INT_MAX, u;
+    printf ("entrou3\n");
+
+    int val = INT_MIN, u;
 
     possibleMoves();
     int li; //i anteriror da peca branca
@@ -361,6 +370,7 @@ int max_value(int alpha, int beta, int depth)
     int nj;
 
     if (player==0) { //jogador um e as brancas
+    	printf ("entrou\n");
 	    for (int i = 0; i < (int) movesp.size(); i++){
 	        depth++;
 	        ni = movesp[i].first;
@@ -371,9 +381,11 @@ int max_value(int alpha, int beta, int depth)
 
 	        vlant = board [ni][nj];
 
-	        board[ni][nj] = 2;
+	        updateBoard (li,lj,ni,nj);
 
 	        u = min_value(alpha,beta,depth);
+
+	        printf ("max = %d\n",u);
 
 	        if (val < u) {
 	            if (depth==1){
@@ -385,8 +397,10 @@ int max_value(int alpha, int beta, int depth)
 	            val = u;
 	        }
 
-	        if (val>=beta)
+	        if (val>=beta){
+	        	printf ("entrou5\n");
 	            return val;
+	        }
 
 	        alpha = std::min (alpha,val);
 	        depth--;
@@ -405,9 +419,10 @@ int max_value(int alpha, int beta, int depth)
 
 	        vlant = board [ni][nj];
 
-	        board[ni][nj] = 1;
+	       updateBoard (li,lj,ni,nj);
 
 	        u = min_value(alpha,beta,depth);
+	        printf ("max = %d\n",u);
 
 	        if (val < u) {
 	            if (depth==1){
@@ -435,6 +450,7 @@ int max_value(int alpha, int beta, int depth)
 
 
 int main () {
+	max_depth = 4;
 	nwhite = 14;
 	nblack = 14;
 	initGame();
