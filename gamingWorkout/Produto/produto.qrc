@@ -2,5 +2,8 @@
     <qresource prefix="/img">
         <file>img/produto.jpg</file>
         <file>img/board.png</file>
+        <file>img/bl.jpeg</file>
+        <file>img/ye.png</file>
+        <file>img/wh.png</file>
     </qresource>
 </RCC>

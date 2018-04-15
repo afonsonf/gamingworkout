@@ -83,6 +83,10 @@ private slots:
     void on_b83_clicked();
     void on_b84_clicked();
 
+    void on_pushButton_2_clicked();
+
+    void on_comboBox_2_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::produto  *ui;
     QPushButton *back;

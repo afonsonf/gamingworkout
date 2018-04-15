@@ -18,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     begin_win();
 
-    //comentario afonso
+    QIcon icon(":/img/myappico.png");
+    this->setWindowIcon(icon);
 }
 
 MainWindow::~MainWindow()
@@ -28,7 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::begin_win(){
     QFrame* line;
-    this->setStyleSheet("background-color: ##9999ff");
+    //this->setStyleSheet("background-color: #9999ff");
     //ui->page->setStyleSheet("background-color: #ffffff");
 
     //semaforo

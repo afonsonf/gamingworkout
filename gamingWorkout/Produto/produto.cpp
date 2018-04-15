@@ -3,6 +3,7 @@
 
 #include <queue>
 #include <QDebug>
+#include <QMessageBox>
 
 produto::produto(QWidget *parent,QPushButton *b) :
     QWidget(parent),
@@ -48,9 +49,13 @@ void produto::on_sair_2_clicked()
 void produto::click(int i, int j)
 {
     int ix = i,jx = j;
-    if(i>4) jx += (i-4);
-
+    if(i>4) jx += i-4;
+    //qDebug() << "!!";
+    if(game_end && turn!=0) return;
+    //qDebug() << "!!";
     if(!valid_move(ix,jx)) return;
+
+
     int play,color;
     if(ui->black->isChecked()){
         play = 1;
@@ -60,38 +65,119 @@ void produto::click(int i, int j)
         play =2;
         color=1;
     }
+
     playHuman(ix,jx,play);
     change_color(color,i,j);
     nturn++;
+
+    if(end()){
+        game_end=1;
+        //show message
+        if(result()==1)
+            QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+        else
+            QMessageBox::information(this,"Game ended","Perdes-te!\n");
+        return;
+    }
 
     std::pair<int,int> p;
     if(game_start && nturn==1){
         game_start = 0;
         nturn = 0;
         //joga o bot
-        p = playBot();
-        i = p.first; j = p.second;
-        if(i>4) j-=(i-4);
-        change_color(1,i,j);
+
+        if(end()){
+            game_end=1;
+            //show message
+            if(result()==1)
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+
+            return;
+        }
 
         p = playBot();
         i = p.first; j = p.second;
         if(i>4) j-=(i-4);
         change_color(1,i,j);
+
+        if(end()){
+            game_end=1;
+            //show message
+            if(result()==1)
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+
+            return;
+        }
+
+        p = playBot();
+        i = p.first; j = p.second;
+        if(i>4) j-=(i-4);
+        change_color(1,i,j);
+
+        if(end()){
+            game_end=1;
+            //show message
+            if(result()==1)
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+
+            return;
+        }
 
     }
     else if(nturn>1){
         nturn = 0;
         //joga o bot
-        p = playBot();
-        i = p.first; j = p.second;
-        if(i>4) j-=(i-4);
-        change_color(1,i,j);
+
+        if(end()){
+            game_end=1;
+            //show message
+            if(result()==1)
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+
+            return;
+        }
 
         p = playBot();
         i = p.first; j = p.second;
         if(i>4) j-=(i-4);
         change_color(1,i,j);
+
+        if(end()){
+            game_end=1;
+            //show message
+            if(result()==1)
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+
+            return;
+        }
+
+
+        p = playBot();
+        i = p.first; j = p.second;
+        if(i>4) j-=(i-4);
+        change_color(1,i,j);
+
+        if(end()){
+            game_end=1;
+            //show message
+            if(result()==1)
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
+
+            return;
+        }
+
     }
 
 }
@@ -220,51 +306,84 @@ bool produto::playHuman(int i,int j, int color)
 std::pair<int,int> produto::playBot()
 {
     //AlphaBeta();
+    int color;
     srand (time(NULL));
     std::vector<std::pair<int,int> > v = possibleMoves();
     int i = rand() % v.size();
     board[v[i].first][v[i].second]=1;
+    color = 1;
+    if (color == 1)
+        npretas++;
+    else
+        nbrancas++;
     return v[i];
 }
 
+void produto::on_comboBox_2_currentIndexChanged(const QString &arg1)
+{
 
+}
 
+void produto::on_pushButton_2_clicked()
+{
+    init_win();init();
+    game_start = 1;
+    game_end = 0;
 
+    if(first_player == 1){
+        nturn = 0;
+        //joga o bot
 
+        if(end()){
+            game_end=1;
+            //show message
+            if(result()==1)
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
 
+            return;
+        }
+        std::pair<int,int> p;
+        int i,j;
+        p = playBot();
+        i = p.first; j = p.second;
+        if(i>4) j-=(i-4);
+        change_color(1,i,j);
 
+        if(end()){
+            game_end=1;
+            //show message
+            if(result()==1)
+                QMessageBox::information(this,"Game ended","Ganhas-te!\n");
+            else
+                QMessageBox::information(this,"Game ended","Perdes-te!\n");
 
+            return;
+        }
+        game_start = 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
+    else turn=0;
+}
 
 //0 clean
 //1 yellow
 //2 black
 void produto::change_color(int color, int i, int j)
 {
-    QPixmap pixmap1(":/img/img/ye.jpg");
+    qDebug() << "!! " << i << " " <<j;
+    QPixmap pixmap1(":/img/img/ye.png");
     QIcon ye(pixmap1);
     QPixmap pixmap2(":/img/img/bl.jpeg");
     QIcon bl(pixmap2);
+    QPixmap pixmap3(":/img/img/wh.png");
+    QIcon wh(pixmap3);
 
     switch(i*10+j){
     case 00:
         if(color == 0)
-            ui->b00->setStyleSheet("background-color: white");
+            ui->b00->setIcon(wh);
         if(color == 1)
             ui->b00->setIcon(ye);
         if(color == 2)
@@ -273,7 +392,7 @@ void produto::change_color(int color, int i, int j)
         ui->b00->setIconSize(ui->b00->size()); return;
     case 01:
         if(color == 0)
-            ui->b01->setStyleSheet("background-color: white");
+            ui->b01->setIcon(wh);
         if(color == 1)
             ui->b01->setIcon(ye);
         if(color == 2)
@@ -281,7 +400,7 @@ void produto::change_color(int color, int i, int j)
         ui->b01->setIconSize(ui->b00->size()); return;
     case 02:
         if(color == 0)
-            ui->b02->setStyleSheet("background-color: white");
+            ui->b02->setIcon(wh);
         if(color == 1)
             ui->b02->setIcon(ye);
         if(color == 2)
@@ -289,7 +408,7 @@ void produto::change_color(int color, int i, int j)
         ui->b02->setIconSize(ui->b00->size()); return;
     case 03:
         if(color == 0)
-            ui->b03->setStyleSheet("background-color: white");
+            ui->b03->setIcon(wh);
         if(color == 1)
             ui->b03->setIcon(ye);
         if(color == 2)
@@ -297,7 +416,7 @@ void produto::change_color(int color, int i, int j)
         ui->b03->setIconSize(ui->b00->size()); return;
     case 04:
         if(color == 0)
-            ui->b04->setStyleSheet("background-color: white");
+            ui->b04->setIcon(wh);
         if(color == 1)
             ui->b04->setIcon(ye);
         if(color == 2)
@@ -306,7 +425,7 @@ void produto::change_color(int color, int i, int j)
 
     case 10:
         if(color == 0)
-            ui->b10->setStyleSheet("background-color: white");
+            ui->b10->setIcon(wh);
         if(color == 1)
             ui->b10->setIcon(ye);
         if(color == 2)
@@ -314,7 +433,7 @@ void produto::change_color(int color, int i, int j)
         ui->b10->setIconSize(ui->b00->size()); return;
     case 11:
         if(color == 0)
-            ui->b11->setStyleSheet("background-color: white");
+            ui->b11->setIcon(wh);
         if(color == 1)
             ui->b11->setIcon(ye);
         if(color == 2)
@@ -322,7 +441,7 @@ void produto::change_color(int color, int i, int j)
         ui->b11->setIconSize(ui->b00->size()); return;
     case 12:
         if(color == 0)
-            ui->b12->setStyleSheet("background-color: white");
+            ui->b12->setIcon(wh);
         if(color == 1)
             ui->b12->setIcon(ye);
         if(color == 2)
@@ -330,7 +449,7 @@ void produto::change_color(int color, int i, int j)
         ui->b12->setIconSize(ui->b00->size()); return;
     case 13:
         if(color == 0)
-            ui->b13->setStyleSheet("background-color: white");
+            ui->b13->setIcon(wh);
         if(color == 1)
             ui->b13->setIcon(ye);
         if(color == 2)
@@ -338,7 +457,7 @@ void produto::change_color(int color, int i, int j)
         ui->b13->setIconSize(ui->b00->size()); return;
     case 14:
         if(color == 0)
-            ui->b14->setStyleSheet("background-color: white");
+            ui->b14->setIcon(wh);
         if(color == 1)
             ui->b14->setIcon(ye);
         if(color == 2)
@@ -346,7 +465,7 @@ void produto::change_color(int color, int i, int j)
         ui->b14->setIconSize(ui->b00->size()); return;
     case 15:
         if(color == 0)
-            ui->b15->setStyleSheet("background-color: white");
+            ui->b15->setIcon(wh);
         if(color == 1)
             ui->b15->setIcon(ye);
         if(color == 2)
@@ -355,7 +474,7 @@ void produto::change_color(int color, int i, int j)
 
     case 20:
         if(color == 0)
-            ui->b20->setStyleSheet("background-color: white");
+            ui->b20->setIcon(wh);
         if(color == 1)
             ui->b20->setIcon(ye);
         if(color == 2)
@@ -363,7 +482,7 @@ void produto::change_color(int color, int i, int j)
         ui->b20->setIconSize(ui->b00->size()); return;
     case 21:
         if(color == 0)
-            ui->b21->setStyleSheet("background-color: white");
+            ui->b21->setIcon(wh);
         if(color == 1)
             ui->b21->setIcon(ye);
         if(color == 2)
@@ -371,7 +490,7 @@ void produto::change_color(int color, int i, int j)
         ui->b21->setIconSize(ui->b00->size()); return;
     case 22:
         if(color == 0)
-            ui->b22->setStyleSheet("background-color: white");
+            ui->b22->setIcon(wh);
         if(color == 1)
             ui->b22->setIcon(ye);
         if(color == 2)
@@ -379,7 +498,7 @@ void produto::change_color(int color, int i, int j)
         ui->b22->setIconSize(ui->b00->size()); return;
     case 23:
         if(color == 0)
-            ui->b23->setStyleSheet("background-color: white");
+            ui->b23->setIcon(wh);
         if(color == 1)
             ui->b23->setIcon(ye);
         if(color == 2)
@@ -387,7 +506,7 @@ void produto::change_color(int color, int i, int j)
         ui->b23->setIconSize(ui->b00->size()); return;
     case 24:
         if(color == 0)
-            ui->b24->setStyleSheet("background-color: white");
+            ui->b24->setIcon(wh);
         if(color == 1)
             ui->b24->setIcon(ye);
         if(color == 2)
@@ -395,7 +514,7 @@ void produto::change_color(int color, int i, int j)
         ui->b24->setIconSize(ui->b00->size()); return;
     case 25:
         if(color == 0)
-            ui->b25->setStyleSheet("background-color: white");
+            ui->b25->setIcon(wh);
         if(color == 1)
             ui->b25->setIcon(ye);
         if(color == 2)
@@ -403,7 +522,7 @@ void produto::change_color(int color, int i, int j)
         ui->b25->setIconSize(ui->b00->size()); return;
     case 26:
         if(color == 0)
-            ui->b26->setStyleSheet("background-color: white");
+            ui->b26->setIcon(wh);
         if(color == 1)
             ui->b26->setIcon(ye);
         if(color == 2)
@@ -412,7 +531,7 @@ void produto::change_color(int color, int i, int j)
 
     case 30:
         if(color == 0)
-            ui->b30->setStyleSheet("background-color: white");
+            ui->b30->setIcon(wh);
         if(color == 1)
             ui->b30->setIcon(ye);
         if(color == 2)
@@ -420,7 +539,7 @@ void produto::change_color(int color, int i, int j)
         ui->b30->setIconSize(ui->b00->size()); return;
     case 31:
         if(color == 0)
-            ui->b31->setStyleSheet("background-color: white");
+            ui->b31->setIcon(wh);
         if(color == 1)
             ui->b31->setIcon(ye);
         if(color == 2)
@@ -428,7 +547,7 @@ void produto::change_color(int color, int i, int j)
         ui->b31->setIconSize(ui->b00->size()); return;
     case 32:
         if(color == 0)
-            ui->b32->setStyleSheet("background-color: white");
+            ui->b32->setIcon(wh);
         if(color == 1)
             ui->b32->setIcon(ye);
         if(color == 2)
@@ -436,7 +555,7 @@ void produto::change_color(int color, int i, int j)
         ui->b32->setIconSize(ui->b00->size()); return;
     case 33:
         if(color == 0)
-            ui->b33->setStyleSheet("background-color: white");
+            ui->b33->setIcon(wh);
         if(color == 1)
             ui->b33->setIcon(ye);
         if(color == 2)
@@ -444,7 +563,7 @@ void produto::change_color(int color, int i, int j)
         ui->b33->setIconSize(ui->b00->size()); return;
     case 34:
         if(color == 0)
-            ui->b34->setStyleSheet("background-color: white");
+            ui->b34->setIcon(wh);
         if(color == 1)
             ui->b34->setIcon(ye);
         if(color == 2)
@@ -452,7 +571,7 @@ void produto::change_color(int color, int i, int j)
         ui->b34->setIconSize(ui->b00->size()); return;
     case 35:
         if(color == 0)
-            ui->b35->setStyleSheet("background-color: white");
+            ui->b35->setIcon(wh);
         if(color == 1)
             ui->b35->setIcon(ye);
         if(color == 2)
@@ -460,7 +579,7 @@ void produto::change_color(int color, int i, int j)
         ui->b35->setIconSize(ui->b00->size()); return;
     case 36:
         if(color == 0)
-            ui->b36->setStyleSheet("background-color: white");
+            ui->b36->setIcon(wh);
         if(color == 1)
             ui->b36->setIcon(ye);
         if(color == 2)
@@ -468,7 +587,7 @@ void produto::change_color(int color, int i, int j)
         ui->b36->setIconSize(ui->b00->size()); return;
     case 37:
         if(color == 0)
-            ui->b37->setStyleSheet("background-color: white");
+            ui->b37->setIcon(wh);
         if(color == 1)
             ui->b37->setIcon(ye);
         if(color == 2)
@@ -477,7 +596,7 @@ void produto::change_color(int color, int i, int j)
 
     case 40:
         if(color == 0)
-            ui->b40->setStyleSheet("background-color: white");
+            ui->b40->setIcon(wh);
         if(color == 1)
             ui->b40->setIcon(ye);
         if(color == 2)
@@ -485,7 +604,7 @@ void produto::change_color(int color, int i, int j)
         ui->b40->setIconSize(ui->b00->size()); return;
     case 41:
         if(color == 0)
-            ui->b41->setStyleSheet("background-color: white");
+            ui->b41->setIcon(wh);
         if(color == 1)
             ui->b41->setIcon(ye);
         if(color == 2)
@@ -493,7 +612,7 @@ void produto::change_color(int color, int i, int j)
         ui->b41->setIconSize(ui->b00->size()); return;
     case 42:
         if(color == 0)
-            ui->b42->setStyleSheet("background-color: white");
+            ui->b42->setIcon(wh);
         if(color == 1)
             ui->b42->setIcon(ye);
         if(color == 2)
@@ -501,7 +620,7 @@ void produto::change_color(int color, int i, int j)
         ui->b42->setIconSize(ui->b00->size()); return;
     case 43:
         if(color == 0)
-            ui->b43->setStyleSheet("background-color: white");
+            ui->b43->setIcon(wh);
         if(color == 1)
             ui->b43->setIcon(ye);
         if(color == 2)
@@ -509,7 +628,7 @@ void produto::change_color(int color, int i, int j)
         ui->b43->setIconSize(ui->b00->size()); return;
     case 44:
         if(color == 0)
-            ui->b44->setStyleSheet("background-color: white");
+            ui->b44->setIcon(wh);
         if(color == 1)
             ui->b44->setIcon(ye);
         if(color == 2)
@@ -517,7 +636,7 @@ void produto::change_color(int color, int i, int j)
         ui->b44->setIconSize(ui->b00->size()); return;
     case 45:
         if(color == 0)
-            ui->b45->setStyleSheet("background-color: white");
+            ui->b45->setIcon(wh);
         if(color == 1)
             ui->b45->setIcon(ye);
         if(color == 2)
@@ -525,7 +644,7 @@ void produto::change_color(int color, int i, int j)
         ui->b45->setIconSize(ui->b00->size()); return;
     case 46:
         if(color == 0)
-            ui->b46->setStyleSheet("background-color: white");
+            ui->b46->setIcon(wh);
         if(color == 1)
             ui->b46->setIcon(ye);
         if(color == 2)
@@ -533,7 +652,7 @@ void produto::change_color(int color, int i, int j)
         ui->b46->setIconSize(ui->b00->size()); return;
     case 47:
         if(color == 0)
-            ui->b47->setStyleSheet("background-color: white");
+            ui->b47->setIcon(wh);
         if(color == 1)
             ui->b47->setIcon(ye);
         if(color == 2)
@@ -541,7 +660,7 @@ void produto::change_color(int color, int i, int j)
         ui->b47->setIconSize(ui->b00->size()); return;
     case 48:
         if(color == 0)
-            ui->b48->setStyleSheet("background-color: white");
+            ui->b48->setIcon(wh);
         if(color == 1)
             ui->b48->setIcon(ye);
         if(color == 2)
@@ -550,7 +669,7 @@ void produto::change_color(int color, int i, int j)
 
     case 50:
         if(color == 0)
-            ui->b50->setStyleSheet("background-color: white");
+            ui->b50->setIcon(wh);
         if(color == 1)
             ui->b50->setIcon(ye);
         if(color == 2)
@@ -558,7 +677,7 @@ void produto::change_color(int color, int i, int j)
         ui->b50->setIconSize(ui->b00->size()); return;
     case 51:
         if(color == 0)
-            ui->b51->setStyleSheet("background-color: white");
+            ui->b51->setIcon(wh);
         if(color == 1)
             ui->b51->setIcon(ye);
         if(color == 2)
@@ -566,7 +685,7 @@ void produto::change_color(int color, int i, int j)
         ui->b51->setIconSize(ui->b00->size()); return;
     case 52:
         if(color == 0)
-            ui->b52->setStyleSheet("background-color: white");
+            ui->b52->setIcon(wh);
         if(color == 1)
             ui->b52->setIcon(ye);
         if(color == 2)
@@ -574,7 +693,7 @@ void produto::change_color(int color, int i, int j)
         ui->b52->setIconSize(ui->b00->size()); return;
     case 53:
         if(color == 0)
-            ui->b53->setStyleSheet("background-color: white");
+            ui->b53->setIcon(wh);
         if(color == 1)
             ui->b53->setIcon(ye);
         if(color == 2)
@@ -582,7 +701,7 @@ void produto::change_color(int color, int i, int j)
         ui->b53->setIconSize(ui->b00->size()); return;
     case 54:
         if(color == 0)
-            ui->b54->setStyleSheet("background-color: white");
+            ui->b54->setIcon(wh);
         if(color == 1)
             ui->b54->setIcon(ye);
         if(color == 2)
@@ -590,7 +709,7 @@ void produto::change_color(int color, int i, int j)
         ui->b54->setIconSize(ui->b00->size()); return;
     case 55:
         if(color == 0)
-            ui->b55->setStyleSheet("background-color: white");
+            ui->b55->setIcon(wh);
         if(color == 1)
             ui->b55->setIcon(ye);
         if(color == 2)
@@ -598,7 +717,7 @@ void produto::change_color(int color, int i, int j)
         ui->b55->setIconSize(ui->b00->size()); return;
     case 56:
         if(color == 0)
-            ui->b56->setStyleSheet("background-color: white");
+            ui->b56->setIcon(wh);
         if(color == 1)
             ui->b56->setIcon(ye);
         if(color == 2)
@@ -606,7 +725,7 @@ void produto::change_color(int color, int i, int j)
         ui->b56->setIconSize(ui->b00->size()); return;
     case 57:
         if(color == 0)
-            ui->b57->setStyleSheet("background-color: white");
+            ui->b57->setIcon(wh);
         if(color == 1)
             ui->b57->setIcon(ye);
         if(color == 2)
@@ -615,7 +734,7 @@ void produto::change_color(int color, int i, int j)
 
     case 60:
         if(color == 0)
-            ui->b60->setStyleSheet("background-color: white");
+            ui->b60->setIcon(wh);
         if(color == 1)
             ui->b60->setIcon(ye);
         if(color == 2)
@@ -623,7 +742,7 @@ void produto::change_color(int color, int i, int j)
         ui->b60->setIconSize(ui->b00->size()); return;
     case 61:
         if(color == 0)
-            ui->b61->setStyleSheet("background-color: white");
+            ui->b61->setIcon(wh);
         if(color == 1)
             ui->b61->setIcon(ye);
         if(color == 2)
@@ -631,7 +750,7 @@ void produto::change_color(int color, int i, int j)
         ui->b61->setIconSize(ui->b00->size()); return;
     case 62:
         if(color == 0)
-            ui->b62->setStyleSheet("background-color: white");
+            ui->b62->setIcon(wh);
         if(color == 1)
             ui->b62->setIcon(ye);
         if(color == 2)
@@ -639,7 +758,7 @@ void produto::change_color(int color, int i, int j)
         ui->b62->setIconSize(ui->b00->size()); return;
     case 63:
         if(color == 0)
-            ui->b63->setStyleSheet("background-color: white");
+            ui->b63->setIcon(wh);
         if(color == 1)
             ui->b63->setIcon(ye);
         if(color == 2)
@@ -647,7 +766,7 @@ void produto::change_color(int color, int i, int j)
         ui->b63->setIconSize(ui->b00->size()); return;
     case 64:
         if(color == 0)
-            ui->b64->setStyleSheet("background-color: white");
+            ui->b64->setIcon(wh);
         if(color == 1)
             ui->b64->setIcon(ye);
         if(color == 2)
@@ -655,7 +774,7 @@ void produto::change_color(int color, int i, int j)
         ui->b64->setIconSize(ui->b00->size()); return;
     case 65:
         if(color == 0)
-            ui->b65->setStyleSheet("background-color: white");
+            ui->b65->setIcon(wh);
         if(color == 1)
             ui->b65->setIcon(ye);
         if(color == 2)
@@ -663,7 +782,7 @@ void produto::change_color(int color, int i, int j)
         ui->b65->setIconSize(ui->b00->size()); return;
     case 66:
         if(color == 0)
-            ui->b66->setStyleSheet("background-color: white");
+            ui->b66->setIcon(wh);
         if(color == 1)
             ui->b66->setIcon(ye);
         if(color == 2)
@@ -672,7 +791,7 @@ void produto::change_color(int color, int i, int j)
 
     case 70:
         if(color == 0)
-            ui->b70->setStyleSheet("background-color: white");
+            ui->b70->setIcon(wh);
         if(color == 1)
             ui->b70->setIcon(ye);
         if(color == 2)
@@ -680,7 +799,7 @@ void produto::change_color(int color, int i, int j)
         ui->b70->setIconSize(ui->b00->size()); return;
     case 71:
         if(color == 0)
-            ui->b71->setStyleSheet("background-color: white");
+            ui->b71->setIcon(wh);
         if(color == 1)
             ui->b71->setIcon(ye);
         if(color == 2)
@@ -688,7 +807,7 @@ void produto::change_color(int color, int i, int j)
         ui->b71->setIconSize(ui->b00->size()); return;
     case 72:
         if(color == 0)
-            ui->b72->setStyleSheet("background-color: white");
+            ui->b72->setIcon(wh);
         if(color == 1)
             ui->b72->setIcon(ye);
         if(color == 2)
@@ -696,7 +815,7 @@ void produto::change_color(int color, int i, int j)
         ui->b72->setIconSize(ui->b00->size()); return;
     case 73:
         if(color == 0)
-            ui->b73->setStyleSheet("background-color: white");
+            ui->b73->setIcon(wh);
         if(color == 1)
             ui->b73->setIcon(ye);
         if(color == 2)
@@ -704,7 +823,7 @@ void produto::change_color(int color, int i, int j)
         ui->b73->setIconSize(ui->b00->size()); return;
     case 74:
         if(color == 0)
-            ui->b74->setStyleSheet("background-color: white");
+            ui->b74->setIcon(wh);
         if(color == 1)
             ui->b74->setIcon(ye);
         if(color == 2)
@@ -712,7 +831,7 @@ void produto::change_color(int color, int i, int j)
         ui->b74->setIconSize(ui->b00->size()); return;
     case 75:
         if(color == 0)
-            ui->b75->setStyleSheet("background-color: white");
+            ui->b75->setIcon(wh);
         if(color == 1)
             ui->b75->setIcon(ye);
         if(color == 2)
@@ -721,7 +840,7 @@ void produto::change_color(int color, int i, int j)
 
     case 80:
         if(color == 0)
-            ui->b80->setStyleSheet("background-color: white");
+            ui->b80->setIcon(wh);
         if(color == 1)
             ui->b80->setIcon(ye);
         if(color == 2)
@@ -729,7 +848,7 @@ void produto::change_color(int color, int i, int j)
         ui->b80->setIconSize(ui->b00->size()); return;
     case 81:
         if(color == 0)
-            ui->b81->setStyleSheet("background-color: white");
+            ui->b81->setIcon(wh);
         if(color == 1)
             ui->b81->setIcon(ye);
         if(color == 2)
@@ -737,7 +856,7 @@ void produto::change_color(int color, int i, int j)
         ui->b81->setIconSize(ui->b00->size()); return;
     case 82:
         if(color == 0)
-            ui->b82->setStyleSheet("background-color: white");
+            ui->b82->setIcon(wh);
         if(color == 1)
             ui->b82->setIcon(ye);
         if(color == 2)
@@ -745,7 +864,7 @@ void produto::change_color(int color, int i, int j)
         ui->b82->setIconSize(ui->b00->size()); return;
     case 83:
         if(color == 0)
-            ui->b83->setStyleSheet("background-color: white");
+            ui->b83->setIcon(wh);
         if(color == 1)
             ui->b83->setIcon(ye);
         if(color == 2)
@@ -753,7 +872,7 @@ void produto::change_color(int color, int i, int j)
         ui->b83->setIconSize(ui->b00->size()); return;
     case 84:
         if(color == 0)
-            ui->b84->setStyleSheet("background-color: white");
+            ui->b84->setIcon(wh);
         if(color == 1)
             ui->b84->setIcon(ye);
         if(color == 2)
@@ -1006,5 +1125,9 @@ void produto::on_b84_clicked()
 {
     click(8,4);
 }
+
+
+
+
 
 

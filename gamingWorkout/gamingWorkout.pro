@@ -11,6 +11,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = gamingWorkout
 TEMPLATE = app
 
+RC_FILE = myapp.rc
+RC_ICONS += myapp.rc
+ICON = myappico.ico
+
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -26,34 +30,32 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    semaforo/semaforo.cpp \
+    #semaforo/semaforo.cpp \
     rastros/rastros.cpp \
     caesGatos/caesgatos.cpp \
-    avanco/avanco.cpp \
     Produto/produto.cpp
     #avanco/avanco.cpp
 
 HEADERS += \
-        mainwindow.h \
-        semaforo/semaforo.h \
+    mainwindow.h \
+    #semaforo/semaforo.h \
     rastros/rastros.h \
     caesGatos/caesgatos.h \
-    avanco/avanco.h \
     Produto/produto.h
     #avanco/avanco.h
 
 FORMS += \
     mainwindow.ui \
-    semaforo/semaforo.ui \
+    #semaforo/semaforo.ui \
     rastros/rastros.ui \
     caesGatos/caesgatos.ui \
-    avanco/avanco.ui \
+    #avanco/avanco.ui \
     Produto/produto.ui
-    #avanco/avanco.ui
 
 
 RESOURCES += \
     semaforo/semaforo.qrc \
     rastros/rastros.qrc \
     caesGatos/caesgatos.qrc \
-    Produto/produto.qrc
+    Produto/produto.qrc \
+    icon.qrc
