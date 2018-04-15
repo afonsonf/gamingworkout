@@ -25,6 +25,7 @@ private slots:
     void on_comboBox_2_currentTextChanged(const QString &arg1);
 
 private:
+    int nturn;
     Ui::rastros *ui;
     QPushButton *back;
     QPushButton *m[7][7];

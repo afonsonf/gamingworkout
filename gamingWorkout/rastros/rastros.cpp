@@ -55,6 +55,7 @@ void rastros::init_win()
 
 void rastros::but_click(int i,int j)
 {
+    nturn++;
     qDebug()<<0;
     if(turn!=0 || game_end || (game_start && first_player == 1)) return;
     if(game_start)game_start =0;
@@ -102,10 +103,13 @@ void rastros::but_click(int i,int j)
     QCoreApplication::processEvents();
 
     turn = 1;
-    m[6-brancaI][brancaJ]->setIcon(ButtonIcon1);
-    m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
+    int bbi = 6-brancaI,bbj = brancaJ;
 
     playBot();
+
+    m[bbi][bbj]->setIcon(ButtonIcon1);
+    m[bbi][bbj]->setIconSize(m[bbi][bbj]->size());
+
     ui->mensagem->setText("");
     m[6-brancaI][brancaJ]->setIcon(ButtonIcon2);
     m[6-brancaI][brancaJ]->setIconSize(m[6-brancaI][brancaJ]->size());
@@ -140,6 +144,7 @@ rastros::~rastros()
 
 void rastros::init()
 {
+    nturn= 0;
     brancaI = 4;
     brancaJ = 4;
     pfinal[0][0] = 0;
@@ -258,6 +263,8 @@ void rastros::playBot()
 
 void rastros::AlphaBeta ()
 {
+    if(nturn<2) max_depth = 10;
+    else max_depth = 13;
     int alpha = INT_MIN;
     int beta =INT_MAX;
     int depth = 0;

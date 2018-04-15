@@ -13,6 +13,7 @@ produto::produto(QWidget *parent,QPushButton *b) :
     back = b;
     init_win();
     init();
+    first_player = 0;
 }
 
 produto::~produto()
@@ -35,7 +36,6 @@ void produto::init_win()
     nturn=0;
     game_end=0;
     game_start = 1;
-    first_player = 0;
 }
 
 
@@ -321,18 +321,19 @@ std::pair<int,int> produto::playBot()
 
 void produto::on_comboBox_2_currentIndexChanged(const QString &arg1)
 {
+    if(arg1=="human")first_player = 0;
+    else first_player = 1;
 
-}
-
-void produto::on_pushButton_2_clicked()
-{
-    init_win();init();
-    game_start = 1;
-    game_end = 0;
-
-    if(first_player == 1){
+    if(game_start && first_player==1){
         nturn = 0;
         //joga o bot
+
+        std::pair<int,int> p;
+        int i,j;
+        p = playBot();
+        i = p.first; j = p.second;
+        if(i>4) j-=(i-4);
+        change_color(1,i,j);
 
         if(end()){
             game_end=1;
@@ -344,6 +345,22 @@ void produto::on_pushButton_2_clicked()
 
             return;
         }
+        game_start = 0;
+
+   }
+}
+
+void produto::on_pushButton_2_clicked()
+{
+    init_win();init();
+    game_start = 1;
+    game_end = 0;
+
+    qDebug() << "Bot " << first_player;
+    if(first_player == 1){
+        nturn = 0;
+        //joga o bot
+
         std::pair<int,int> p;
         int i,j;
         p = playBot();
@@ -372,7 +389,7 @@ void produto::on_pushButton_2_clicked()
 //2 black
 void produto::change_color(int color, int i, int j)
 {
-    qDebug() << "!! " << i << " " <<j;
+    //qDebug() << "!! " << i << " " <<j;
     QPixmap pixmap1(":/img/img/ye.png");
     QIcon ye(pixmap1);
     QPixmap pixmap2(":/img/img/bl.jpeg");
