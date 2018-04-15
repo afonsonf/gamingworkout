@@ -1,6 +1,6 @@
-## gamingWorkout
+# gamingWorkout
 
-#Program description:
+##Program description:
 
 In this program we made 4 games from the National Championship of Mathematical Games, so that students who are attending to this contest can practice and improve their gaming knowledge. This contest is a competition for children who are in the primary school up to secondary school where they play 1v1 board games.
 	
@@ -10,13 +10,13 @@ Tournament url: <http://ludicum.org/cnjm>
         
 -------------------------------------------
 
-#Requeriments:
+##Requeriments:
 
 OS linux or Windows. (Not supported for Mac yet)
 
 -------------------------------------------
 
-#Opening tips:
+##Opening tips:
 
 Windows: open gamingWorkoutWindows.AppImage file
 
@@ -24,7 +24,7 @@ Linux: ./gamingWorkoutLinux.AppImage
         
 -------------------------------------------
 
-#Executing:
+##Executing:
 
 Just choose one of the games and then click in which tile you want to play.
 
