@@ -4,18 +4,33 @@
 //branco = 1
 //preto = 2
 
-int board[7][7];
-int turn;
-std::vector< std::pair<int, int> > blackpieces;
-std::vector< std::pair<int, int> > whitepieces;
-int nwhite;
-int nblack;
-std::vector< std::pair<int, int> > movesw;
-std::vector< std::pair<int, int> > movesp;
-std::vector< std::pair<int, int> > lastw;
-std::vector< std::pair<int, int> > lastp;
+int board[7][7]; //tabuleiro atual
+int turn; //turno atual, 0 para brancas, 1 para pretas
+std::vector< std::pair<int, int> > blackpieces; //localizacao das pecas brancas
+std::vector< std::pair<int, int> > whitepieces; //localizaco das pecas pretas
+int nwhite; //numero de peca brancas
+int nblack; //numero de pecas pretas
+std::vector< std::pair<int, int> > movesw; //jogadas possiveis para as pecas brancas
+std::vector< std::pair<int, int> > movesp; //jogadas possiveis para as pecas pretas
+std::vector< std::pair<int, int> > lastw; //posicao anterior caso a jogada possivel seja efetuada (para brancas)
+std::vector< std::pair<int, int> > lastp; //posicao anterior casa a jogada possivel seja efetuada (para pretas)
+int player; //0 se for o primeiro a jogar, 1 caso contrario
+int max_depth; //profundidade maxima
+int best_play[2]; //i e j da melhor jogada
+int ant_best_play[2]; //i e j anteriores a melhor jogada
 
+void initGame ();
+bool validMove(int oldY, int oldX, int newY, int newX);
+void possibleMoves();
+void updateBoard (int Xnow, int Ynow,int moveX, int moveY);
+void playHuman(int Xnow, int Ynow,int moveX, int moveY);
+void playBot();
+int checkGameOver();
 void print();
+int heursistica ();
+void AlphaBeta ();
+int min_value(int alpha, int beta, int depth);
+int max_value(int alpha, int beta, int depth);
 
 void initGame () {
 	for (int i=0;i<7;i++) {
@@ -160,9 +175,9 @@ void updateBoard (int Xnow, int Ynow,int moveX, int moveY) {
 
 
 }
-void playHuman(int Xnow, int Ynow,int moveY, int moveX) {
+void playHuman(int Xnow, int Ynow,int moveX, int moveY) {
 	if (validMove(Ynow,Xnow,moveY,moveX)){
-    	updateBoard(Xnow,Ynow,moveY,moveX);
+    	updateBoard(Xnow,Ynow,moveX,moveY);
 	}
     else {
     	while (!validMove(Ynow,Xnow,moveY,moveX)) {
@@ -173,37 +188,8 @@ void playHuman(int Xnow, int Ynow,int moveY, int moveX) {
 }
 
 void playBot() {
-    srand(time(NULL));
-    possibleMoves();
-    std::pair<int,int> v;
-    std::pair<int,int> a;
-    if (turn==0) {
-    	int t = rand()%(int)movesw.size();
-	    v = movesw[t];
-	    a = lastw[t];
-	}
-	else{
-    	int t = rand()%(int)movesp.size();
-	    v = movesp[t];
-	    a = lastp[t];		
-	}
-
-   	int moveX = v.first;
-   	int moveY = v.second;
-
-   	int Xnow = a.first; //i anterior
-   	int Ynow = a.second; //j anterior
-
-   	updateBoard(Xnow,Ynow,moveX,moveY);
-}
-
-std::pair<int, int> chooseMove(){
-	/*
-    srand (time(NULL));
-    std::vector<std::pair<int,int> > v = possibleMoves();
-    int i = rand() % v.size();
-    return v[i];
-    */
+	AlphaBeta();
+	updateBoard(ant_best_play[0],ant_best_play[1],best_play[0],best_play[1]);
 }
 
 int checkGameOver(){
@@ -231,6 +217,223 @@ void print() {
 		printf ("\n");
 }
 
+int heuristica () { //somatorio de quanto as pecas ja avancaram
+	int f = checkGameOver();
+	if (f!=-1) {
+		if ((f==0 && player==0) || (f==1 && player==1))
+			return -100;
+		else
+			return 100;
+	}
+	int vb=0; //heuristica para brancas
+	int vp=0; //heuristica para pretas
+
+	for (int i=0;i<(int)blackpieces.size();i++) {
+		int fila = blackpieces[i].first;
+		vp += std::abs(fila-0);
+	}
+
+	for (int i=0;i<(int)whitepieces.size();i++) {
+		int fila = whitepieces[i].first;
+		vb += std::abs(fila-6);
+	}
+
+	if (player==1)
+		return vb-vp;
+	
+	return vp-vb;
+
+}
+
+void AlphaBeta () 
+{
+    int alpha = INT_MIN;
+    int beta =INT_MAX;
+    int depth = 0;
+    if (turn == 0)
+        min_value(alpha,beta,depth);
+    else
+        max_value(alpha,beta,depth);
+
+}
+
+int min_value(int alpha, int beta, int depth) 
+{   
+    if (checkGameOver() || depth>=max_depth) {
+        return heuristica();
+    }
+
+    int val = INT_MAX, u;
+
+    possibleMoves();
+    int li; //i anteriror da peca branca
+    int lj; //j anterior da peca branca
+    int ni;
+    int nj;
+    int vlant; //valor anterior da peca onde vai ser joagado
+
+    if (player==1) { //jogador um e as pretas
+	    for (int i = 0; i < (int) movesp.size(); i++){
+	        depth++;
+	        ni = movesp[i].first;
+	        nj = movesp[i].second;
+
+	        li = lastp[i].first;
+	        lj = lastp[i].second;
+
+	        vlant = board [ni][nj];
+
+	        board[ni][nj] = 2;
+
+	        u = max_value(alpha,beta,depth);
+
+	        if (val > u) {
+	            if (depth==1){
+	                best_play[0] = ni;
+	                best_play[1] = nj;
+	                ant_best_play[0] = li;
+	                ant_best_play[1] = lj;
+	            }
+	            val = u;
+	        }
+
+	        if (val<=alpha)
+	            return val;
+
+	        beta = std::min (beta,val);
+	        depth--;
+	        board[li][lj] = 2;
+	        board[ni][nj] = vlant;
+	    }
+	}
+	else {
+	    for (int i = 0; i < (int) movesw.size(); i++){
+	        depth++;
+	        ni = movesw[i].first;
+	        nj = movesw[i].second;
+
+	        li = lastw[i].first;
+	        lj = lastw[i].second;
+
+	        vlant = board [ni][nj];
+
+	        board[ni][nj] = 1;
+
+	        u = max_value(alpha,beta,depth);
+
+	        if (val > u) {
+	            if (depth==1){
+	                best_play[0] = ni;
+	                best_play[1] = nj;
+	                ant_best_play[0] = li;
+	                ant_best_play[1] = lj;
+	            }
+	            val = u;
+	        }
+
+	        if (val<=alpha)
+	            return val;
+
+	        beta = std::min (beta,val);
+	        depth--;
+	        board[li][lj] = 1;
+	        board[ni][nj] = vlant;
+	    }
+
+	}
+    return val;
+}
+
+int max_value(int alpha, int beta, int depth)
+{  
+    
+    if (checkGameOver() || depth>=max_depth) {
+        return heuristica();
+    }
+
+    int val = INT_MAX, u;
+
+    possibleMoves();
+    int li; //i anteriror da peca branca
+    int lj; //j anterior da peca branca
+    int vlant; //valor anterior da peca onde vai ser joagado
+    int ni;
+    int nj;
+
+    if (player==0) { //jogador um e as brancas
+	    for (int i = 0; i < (int) movesp.size(); i++){
+	        depth++;
+	        ni = movesp[i].first;
+	        nj = movesp[i].second;
+
+	        li = lastp[i].first;
+	        lj = lastp[i].second;
+
+	        vlant = board [ni][nj];
+
+	        board[ni][nj] = 2;
+
+	        u = min_value(alpha,beta,depth);
+
+	        if (val < u) {
+	            if (depth==1){
+	                best_play[0] = ni;
+	                best_play[1] = nj;
+	                ant_best_play[0] = li;
+	                ant_best_play[1] = lj;
+	            }
+	            val = u;
+	        }
+
+	        if (val>=beta)
+	            return val;
+
+	        alpha = std::min (alpha,val);
+	        depth--;
+	        board[li][lj] = 2;
+	        board[ni][nj] = vlant;
+	    }
+	}
+	else {
+	    for (int i = 0; i < (int) movesw.size(); i++){
+	        depth++;
+	        ni = movesw[i].first;
+	        nj = movesw[i].second;
+
+	        li = lastw[i].first;
+	        lj = lastw[i].second;
+
+	        vlant = board [ni][nj];
+
+	        board[ni][nj] = 1;
+
+	        u = min_value(alpha,beta,depth);
+
+	        if (val < u) {
+	            if (depth==1){
+	                best_play[0] = ni;
+	                best_play[1] = nj;
+	                ant_best_play[0] = li;
+	                ant_best_play[1] = lj;
+	            }
+	            val = u;
+	        }
+
+	        if (val>=beta)
+	            return val;
+
+	        alpha = std::min (alpha,val);
+	        depth--;
+	        board[li][lj] = 1;
+	        board[ni][nj] = vlant;
+	    }
+	}
+    return val;
+
+}
+
+
+
 int main () {
 	nwhite = 14;
 	nblack = 14;
@@ -238,20 +441,26 @@ int main () {
 	printf ("inicial:\n");
 	print();
 	printf ("\n");
+	printf ("Quer ser o primeiro a jogar?");
+	scanf("%d", &player); //0 se for o primeiro, 1 caso contrario
 	turn =0;
-	int x = 0;
+	int ia,ja,ie,je;
 	while (checkGameOver()==-1) {
-		playBot();
+		if ((player==0 && turn==0) || (player == 1 && turn == 1)) {
+			printf ("Indique a peca que quer mover e para onde: ");
+			scanf ("%d %d %d %d", &ia, &ja, &ie, &je);
+			playHuman(ia,ja,ie,je);
+			
+		}
+		else 
+			playBot();
 		if (turn ==0)
 			turn=1;
 		else
 			turn =0;
 		print();
-		x++;
-
 		printf ("\n");
 	}
-	printf ("x = %d\n",x);
 	print();
 	return 0;
 }
