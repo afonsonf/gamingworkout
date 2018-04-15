@@ -5,4 +5,4 @@ Program description:
 
         
         
-        [link text itself] http://ludicum.org/cnjm/2017-2018-cnjm14
+        <http://ludicum.org/cnjm/2017-2018-cnjm14>
