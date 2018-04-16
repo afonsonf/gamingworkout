@@ -1,0 +1,2 @@
+1. download gamingWorkout.AppImage
+2. execute file

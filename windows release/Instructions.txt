@@ -1,0 +1,2 @@
+1. download gamingWorkout folder
+2. execute gamingWorkout.exe
