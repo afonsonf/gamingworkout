@@ -16,11 +16,7 @@ OS linux or Windows. (Not supported for Mac yet)
 
 -------------------------------------------
 
-Opening tips:
-
-Windows: open gamingWorkoutWindows.AppImage file
-
-Linux: ./gamingWorkoutLinux.AppImage
+Running Instructions in each release folder
         
 -------------------------------------------
 
